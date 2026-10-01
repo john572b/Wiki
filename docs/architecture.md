@@ -22,7 +22,7 @@ La troisième option est **plus stricte** que l'exigence initiale (« aucun docu
 
 1. **Pas de backend** : `wrangler.jsonc` ne déclare que des *assets* statiques (`assets.directory = dist/`). Aucun code ne s'exécute côté Cloudflare, aucun point d'entrée ne peut recevoir un fichier.
 2. **Content-Security-Policy `connect-src 'self'`** (dans `public/_headers` et en balise `<meta>`) : le navigateur lui-même interdit toute requête vers un autre domaine. Même un bug ou une dépendance malveillante ne peut pas exfiltrer un document.
-3. **Tout est auto-hébergé** : Tesseract (worker + cœur WebAssembly + modèles `fra`, `eng`, `deu`) dans `public/tesseract/`, polices et CMaps de pdf.js dans `public/pdfjs/`. Aucun CDN. Une fois la page chargée, la connexion peut être coupée.
+3. **Tout est auto-hébergé** : Tesseract (worker + cœur WebAssembly + modèles `fra`, `eng`, `deu`, `ltz`) dans `public/tesseract/`, polices et CMaps de pdf.js dans `public/pdfjs/`. Aucun CDN. Une fois la page chargée, la connexion peut être coupée.
 4. **Test automatisé** (`tests/e2e/convert.spec.ts`) : pendant la conversion d'une image avec OCR, Playwright enregistre toutes les requêtes et vérifie qu'aucune ne sort de l'origine.
 5. **Pas de stockage** : résultats en mémoire de la page ; fermer l'onglet efface tout. La politique de rétention (section 7.2) devient sans objet.
 6. **Pas d'IA** : aucun appel à Workers AI ni à un LLM (vérifié : CVtool, lui, utilise `@cf/meta/llama-3.3-70b-instruct-fp8-fast`, ce qui est précisément ce que ce projet exclut).

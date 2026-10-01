@@ -87,7 +87,7 @@ src/
 ├── export/       ZIP par document / par lot
 └── components/   interface Vue
 public/
-├── tesseract/    worker + cœur WebAssembly + modèles de langues (fra, eng, deu) — aucun CDN
+├── tesseract/    worker + cœur WebAssembly + modèles de langues (fra, eng, deu, ltz) — aucun CDN
 └── pdfjs/        polices standard et CMaps de pdf.js
 ```
 

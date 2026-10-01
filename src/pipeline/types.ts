@@ -55,7 +55,7 @@ export interface PipelineOptions {
 
 export const DEFAULT_OPTIONS: PipelineOptions = {
   formats: ['mediawiki', 'confluence'],
-  langs: ['fra', 'eng'],
+  langs: ['fra', 'eng', 'deu', 'ltz'],
   ocrEnabled: true,
   concurrency: Math.max(1, Math.min(3, (typeof navigator !== 'undefined' ? navigator.hardwareConcurrency ?? 2 : 2) - 1)),
   ocrWorkers: Math.max(1, Math.min(2, (typeof navigator !== 'undefined' ? navigator.hardwareConcurrency ?? 2 : 2) - 1)),

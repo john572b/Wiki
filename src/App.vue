@@ -143,11 +143,13 @@ async function changeLangs() {
         <div class="options-grid">
           <label class="inline"><input type="checkbox" v-model="options.ocrEnabled" /> OCR des images et pages scannées</label>
           <label>Langues OCR
-            <select multiple v-model="options.langs" @change="changeLangs" size="3">
+            <select multiple v-model="options.langs" @change="changeLangs" size="4">
               <option value="fra">Français</option>
               <option value="eng">Anglais</option>
               <option value="deu">Allemand</option>
+              <option value="ltz">Luxembourgeois</option>
             </select>
+            <span class="muted">Ctrl+clic pour en choisir plusieurs. Moins de langues = OCR plus rapide.</span>
           </label>
           <label>Documents traités en parallèle <input type="number" min="1" max="8" v-model.number="options.concurrency" /></label>
           <label>Threads OCR <input type="number" min="1" max="4" v-model.number="options.ocrWorkers" /></label>
