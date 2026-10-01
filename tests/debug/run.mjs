@@ -1,3 +1,4 @@
+import { createRequire } from 'node:module'; const require = createRequire(import.meta.url);
 import { chromium } from '@playwright/test';
 import { readFileSync } from 'node:fs';
 const [,, file, kind] = process.argv;
@@ -12,7 +13,7 @@ const b64 = readFileSync(file).toString('base64');
 const t0 = Date.now();
 try {
   const out = await page.evaluate(([b, k, n]) => window.run(b, k, n), [b64, kind, file.split('/').pop()]);
-  console.log(out.slice(0, 6000));
+  require('node:fs').writeFileSync('tests/debug/out.json', out); console.log('written', out.length);
 } catch (e) { console.log('[error]', e.message); }
 console.log('ms', Date.now() - t0);
 await browser.close();

@@ -1,0 +1,3123 @@
+{
+ "lines": [
+  {
+   "page": 1,
+   "text": "JONATHAN BOI",
+   "size": 27,
+   "bold": false,
+   "mono": false,
+   "x0": 34,
+   "x1": 244,
+   "top": 45,
+   "bottom": 75
+  },
+  {
+   "page": 1,
+   "text": "IT INCIDENT MANAGER & AUTOMATION SPECIALIST",
+   "size": 8.5,
+   "bold": false,
+   "mono": false,
+   "x0": 34,
+   "x1": 269,
+   "top": 79,
+   "bottom": 88
+  },
+  {
+   "page": 1,
+   "text": "CONTACT",
+   "size": 7.5,
+   "bold": false,
+   "mono": false,
+   "x0": 14,
+   "x1": 61,
+   "top": 158,
+   "bottom": 166
+  },
+  {
+   "page": 1,
+   "text": "Hettange-Grande",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 32,
+   "x1": 94,
+   "top": 183,
+   "bottom": 192
+  },
+  {
+   "page": 1,
+   "text": "+33 6 11 22 85 60",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 32,
+   "x1": 97,
+   "top": 199,
+   "bottom": 208
+  },
+  {
+   "page": 1,
+   "text": "john572b@hotmail.com",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 32,
+   "x1": 117,
+   "top": 216,
+   "bottom": 225
+  },
+  {
+   "page": 1,
+   "text": "Status : Married",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 32,
+   "x1": 89,
+   "top": 232,
+   "bottom": 241
+  },
+  {
+   "page": 1,
+   "text": "LinkdlnJonathan Boi",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 32,
+   "x1": 104,
+   "top": 249,
+   "bottom": 258
+  },
+  {
+   "page": 1,
+   "text": "SKILLS",
+   "size": 7.5,
+   "bold": false,
+   "mono": false,
+   "x0": 14,
+   "x1": 49,
+   "top": 285,
+   "bottom": 294
+  },
+  {
+   "page": 1,
+   "text": "PowerShell",
+   "size": 8.5,
+   "bold": false,
+   "mono": false,
+   "x0": 14,
+   "x1": 61,
+   "top": 309,
+   "bottom": 319
+  },
+  {
+   "page": 1,
+   "text": "HTML",
+   "size": 8.5,
+   "bold": false,
+   "mono": false,
+   "x0": 14,
+   "x1": 38,
+   "top": 334,
+   "bottom": 343
+  },
+  {
+   "page": 1,
+   "text": "VMware",
+   "size": 8.5,
+   "bold": false,
+   "mono": false,
+   "x0": 14,
+   "x1": 47,
+   "top": 359,
+   "bottom": 369
+  },
+  {
+   "page": 1,
+   "text": "Service Now",
+   "size": 8.5,
+   "bold": false,
+   "mono": false,
+   "x0": 14,
+   "x1": 65,
+   "top": 384,
+   "bottom": 394
+  },
+  {
+   "page": 1,
+   "text": "SCCM",
+   "size": 8.5,
+   "bold": false,
+   "mono": false,
+   "x0": 14,
+   "x1": 40,
+   "top": 409,
+   "bottom": 418
+  },
+  {
+   "page": 1,
+   "text": "App Packaging",
+   "size": 8.5,
+   "bold": false,
+   "mono": false,
+   "x0": 14,
+   "x1": 76,
+   "top": 434,
+   "bottom": 444
+  },
+  {
+   "page": 1,
+   "text": "Root Cause Analysis",
+   "size": 8.5,
+   "bold": false,
+   "mono": false,
+   "x0": 14,
+   "x1": 100,
+   "top": 459,
+   "bottom": 469
+  },
+  {
+   "page": 1,
+   "text": "INC Management",
+   "size": 8.5,
+   "bold": false,
+   "mono": false,
+   "x0": 14,
+   "x1": 84,
+   "top": 484,
+   "bottom": 493
+  },
+  {
+   "page": 1,
+   "text": "Linux",
+   "size": 8.5,
+   "bold": false,
+   "mono": false,
+   "x0": 14,
+   "x1": 37,
+   "top": 509,
+   "bottom": 519
+  },
+  {
+   "page": 1,
+   "text": "LANGUAGE",
+   "size": 7.5,
+   "bold": false,
+   "mono": false,
+   "x0": 14,
+   "x1": 69,
+   "top": 546,
+   "bottom": 555
+  },
+  {
+   "page": 1,
+   "text": "French mother Tongue",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 14,
+   "x1": 122,
+   "top": 571,
+   "bottom": 580
+  },
+  {
+   "page": 1,
+   "text": "English Fluent",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 14,
+   "x1": 122,
+   "top": 583,
+   "bottom": 592
+  },
+  {
+   "page": 1,
+   "text": "CERTIFS",
+   "size": 7.5,
+   "bold": false,
+   "mono": false,
+   "x0": 14,
+   "x1": 56,
+   "top": 613,
+   "bottom": 621
+  },
+  {
+   "page": 1,
+   "text": "ITIL Foundation v3",
+   "size": 8.5,
+   "bold": false,
+   "mono": false,
+   "x0": 23,
+   "x1": 100,
+   "top": 644,
+   "bottom": 654
+  },
+  {
+   "page": 1,
+   "text": "2019",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 23,
+   "x1": 41,
+   "top": 655,
+   "bottom": 664
+  },
+  {
+   "page": 1,
+   "text": "Certification obtenue en",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 23,
+   "x1": 108,
+   "top": 668,
+   "bottom": 677
+  },
+  {
+   "page": 1,
+   "text": "CCNA",
+   "size": 8.5,
+   "bold": false,
+   "mono": false,
+   "x0": 23,
+   "x1": 48,
+   "top": 707,
+   "bottom": 717
+  },
+  {
+   "page": 1,
+   "text": "Cisco Certified Network",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 23,
+   "x1": 107,
+   "top": 720,
+   "bottom": 729
+  },
+  {
+   "page": 1,
+   "text": "Associate – Network",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 23,
+   "x1": 96,
+   "top": 733,
+   "bottom": 742
+  },
+  {
+   "page": 1,
+   "text": "Certified (Afpa 2007)",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 23,
+   "x1": 97,
+   "top": 746,
+   "bottom": 755
+  },
+  {
+   "page": 1,
+   "text": "PROFILE",
+   "size": 8.5,
+   "bold": false,
+   "mono": false,
+   "x0": 151,
+   "x1": 197,
+   "top": 157,
+   "bottom": 166
+  },
+  {
+   "page": 1,
+   "text": "IT professional with strong experience in Incident Management, IT Operations, Endpoint Management (SCCM/MECM),",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 151,
+   "x1": 572,
+   "top": 184,
+   "bottom": 193
+  },
+  {
+   "page": 1,
+   "text": "IAM, and Virtualized environments (Citrix/VMware). Experienced in managing complex incidents, improving service",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 151,
+   "x1": 558,
+   "top": 196,
+   "bottom": 205
+  },
+  {
+   "page": 1,
+   "text": "performance through dashboards and KPI reporting, and driving resolution of critical issues in enterprise environments.",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 151,
+   "x1": 573,
+   "top": 209,
+   "bottom": 218
+  },
+  {
+   "page": 1,
+   "text": "Solid technical background in Windows Server, Active Directory, Exchange, Tenable.sc, and PowerShell automation, with",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 151,
+   "x1": 579,
+   "top": 223,
+   "bottom": 232
+  },
+  {
+   "page": 1,
+   "text": "a strong focus on stability, security, and operational efficiency.",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 151,
+   "x1": 369,
+   "top": 235,
+   "bottom": 244
+  },
+  {
+   "page": 1,
+   "text": "EXPERIENCE",
+   "size": 8.5,
+   "bold": false,
+   "mono": false,
+   "x0": 151,
+   "x1": 220,
+   "top": 266,
+   "bottom": 275
+  },
+  {
+   "page": 1,
+   "text": "Incident Manager",
+   "size": 8.5,
+   "bold": false,
+   "mono": false,
+   "x0": 160,
+   "x1": 231,
+   "top": 299,
+   "bottom": 308
+  },
+  {
+   "page": 1,
+   "text": "Sogeti - European Parliament · Jan 2026 — Present",
+   "size": 8.5,
+   "bold": false,
+   "mono": false,
+   "x0": 160,
+   "x1": 365,
+   "top": 309,
+   "bottom": 319
+  },
+  {
+   "page": 1,
+   "text": "Led the end-to-end management of critical IT incidents across multiple infrastructure and workplace services,",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 172,
+   "x1": 558,
+   "top": 322,
+   "bottom": 331
+  },
+  {
+   "page": 1,
+   "text": "ensuring timely resolution and minimizing business impact.",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 172,
+   "x1": 381,
+   "top": 335,
+   "bottom": 344
+  },
+  {
+   "page": 1,
+   "text": "Coordinated daily operational reviews with technical teams (Group Policy, Software Packaging, WSUS, Windows",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 172,
+   "x1": 572,
+   "top": 349,
+   "bottom": 358
+  },
+  {
+   "page": 1,
+   "text": "Master Image, and other infrastructure teams) to identify blockers, define priorities, and accelerate incident",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 172,
+   "x1": 549,
+   "top": 362,
+   "bottom": 371
+  },
+  {
+   "page": 1,
+   "text": "resolution.",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 172,
+   "x1": 209,
+   "top": 375,
+   "bottom": 384
+  },
+  {
+   "page": 1,
+   "text": "Conducted in-depth analysis of ongoing Incident and ServiceNow (SNOW) task queues, driving continuous",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 172,
+   "x1": 551,
+   "top": 389,
+   "bottom": 398
+  },
+  {
+   "page": 1,
+   "text": "improvement in ticket handling and operational efficiency.",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 172,
+   "x1": 375,
+   "top": 402,
+   "bottom": 411
+  },
+  {
+   "page": 1,
+   "text": "Designed and developed interactive ServiceNow dashboards to provide real-time visibility of incident status,",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 172,
+   "x1": 554,
+   "top": 416,
+   "bottom": 425
+  },
+  {
+   "page": 1,
+   "text": "workload distribution, and operational health.",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 172,
+   "x1": 331,
+   "top": 430,
+   "bottom": 439
+  },
+  {
+   "page": 1,
+   "text": "Created executive KPI dashboards at management's request, enabling data-driven decision-making and",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 172,
+   "x1": 541,
+   "top": 444,
+   "bottom": 453
+  },
+  {
+   "page": 1,
+   "text": "improving reporting on operational performance.",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 172,
+   "x1": 343,
+   "top": 457,
+   "bottom": 466
+  },
+  {
+   "page": 1,
+   "text": "Investigated and troubleshot complex technical issues, providing root cause analysis and coordinating cross-",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 172,
+   "x1": 557,
+   "top": 471,
+   "bottom": 480
+  },
+  {
+   "page": 1,
+   "text": "functional teams to restore services efficiently.",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 172,
+   "x1": 335,
+   "top": 484,
+   "bottom": 493
+  },
+  {
+   "page": 1,
+   "text": "Took ownership of long-standing, high-priority incidents that had remained unresolved for extended periods,",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 172,
+   "x1": 553,
+   "top": 498,
+   "bottom": 507
+  },
+  {
+   "page": 1,
+   "text": "performing detailed investigations that significantly reduced the backlog of critical tickets.",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 172,
+   "x1": 486,
+   "top": 511,
+   "bottom": 520
+  },
+  {
+   "page": 1,
+   "text": "Improved incident governance by implementing structured monitoring and reporting processes, resulting in",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 172,
+   "x1": 549,
+   "top": 525,
+   "bottom": 534
+  },
+  {
+   "page": 1,
+   "text": "measurable improvements in resolution times and overall service quality.",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 172,
+   "x1": 429,
+   "top": 538,
+   "bottom": 547
+  },
+  {
+   "page": 1,
+   "text": "Leveraged PowerShell to automate repetitive administrative tasks and support operational activities.",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 172,
+   "x1": 526,
+   "top": 553,
+   "bottom": 562
+  },
+  {
+   "page": 1,
+   "text": "Selected to join a newly established PowerShell Expert Team following a technical assessment.",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 172,
+   "x1": 510,
+   "top": 567,
+   "bottom": 576
+  },
+  {
+   "page": 1,
+   "text": "Developed a PowerShell scripting exercise used as part of the team's entry evaluation process the script was",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 172,
+   "x1": 559,
+   "top": 581,
+   "bottom": 590
+  },
+  {
+   "page": 1,
+   "text": "reviewed and approved by senior PowerShell experts, validating my technical expertise and securing my",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 172,
+   "x1": 542,
+   "top": 594,
+   "bottom": 603
+  },
+  {
+   "page": 1,
+   "text": "position within the expert group.",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 172,
+   "x1": 285,
+   "top": 607,
+   "bottom": 616
+  },
+  {
+   "page": 1,
+   "text": "SCCM Packager & Vulnerability Management Engineer",
+   "size": 8.5,
+   "bold": false,
+   "mono": false,
+   "x0": 160,
+   "x1": 383,
+   "top": 645,
+   "bottom": 655
+  },
+  {
+   "page": 1,
+   "text": "Sogeti – Intesa Sanpaolo Bank · Apr 2021 — Dec 2025",
+   "size": 8.5,
+   "bold": false,
+   "mono": false,
+   "x0": 160,
+   "x1": 376,
+   "top": 656,
+   "bottom": 665
+  },
+  {
+   "page": 1,
+   "text": "Provided Level 2 and Level 3 technical support for enterprise Windows environments, ensuring rapid resolution",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 172,
+   "x1": 565,
+   "top": 669,
+   "bottom": 678
+  },
+  {
+   "page": 1,
+   "text": "of complex infrastructure and endpoint issues.",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 172,
+   "x1": 336,
+   "top": 682,
+   "bottom": 691
+  },
+  {
+   "page": 1,
+   "text": "Acted as a technical escalation point for Service Desk teams, providing guidance and expertise to first- and",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 172,
+   "x1": 551,
+   "top": 697,
+   "bottom": 706
+  },
+  {
+   "page": 1,
+   "text": "second-line support engineers.",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 172,
+   "x1": 282,
+   "top": 709,
+   "bottom": 718
+  },
+  {
+   "page": 1,
+   "text": "Managed enterprise vulnerability remediation activities in close collaboration with the Information Security team.",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 172,
+   "x1": 568,
+   "top": 724,
+   "bottom": 733
+  },
+  {
+   "page": 1,
+   "text": "Performed vulnerability assessments using Tenable.sc, analyzed scan results, prioritized remediation efforts",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 172,
+   "x1": 554,
+   "top": 738,
+   "bottom": 747
+  },
+  {
+   "page": 1,
+   "text": "based on business impact and security risk, and coordinated mitigation actions across multiple infrastructure",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 172,
+   "x1": 556,
+   "top": 751,
+   "bottom": 760
+  },
+  {
+   "page": 1,
+   "text": "teams.",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 172,
+   "x1": 196,
+   "top": 763,
+   "bottom": 772
+  },
+  {
+   "page": 2,
+   "text": "TRAVELS",
+   "size": 7.5,
+   "bold": true,
+   "mono": false,
+   "x0": 14,
+   "x1": 58,
+   "top": 47,
+   "bottom": 55
+  },
+  {
+   "page": 2,
+   "text": "Main Travels",
+   "size": 8.5,
+   "bold": true,
+   "mono": false,
+   "x0": 23,
+   "x1": 75,
+   "top": 79,
+   "bottom": 88
+  },
+  {
+   "page": 2,
+   "text": "Thailand",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 35,
+   "x1": 66,
+   "top": 92,
+   "bottom": 101
+  },
+  {
+   "page": 2,
+   "text": "Morocco",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 35,
+   "x1": 66,
+   "top": 106,
+   "bottom": 115
+  },
+  {
+   "page": 2,
+   "text": "Jamaica",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 35,
+   "x1": 65,
+   "top": 121,
+   "bottom": 130
+  },
+  {
+   "page": 2,
+   "text": "Ireland",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 35,
+   "x1": 60,
+   "top": 135,
+   "bottom": 144
+  },
+  {
+   "page": 2,
+   "text": "Spain",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 35,
+   "x1": 56,
+   "top": 149,
+   "bottom": 158
+  },
+  {
+   "page": 2,
+   "text": "Turkey",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 35,
+   "x1": 59,
+   "top": 163,
+   "bottom": 172
+  },
+  {
+   "page": 2,
+   "text": "Dubai",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 35,
+   "x1": 56,
+   "top": 178,
+   "bottom": 187
+  },
+  {
+   "page": 2,
+   "text": "LEARNING",
+   "size": 7.5,
+   "bold": true,
+   "mono": false,
+   "x0": 14,
+   "x1": 66,
+   "top": 218,
+   "bottom": 227
+  },
+  {
+   "page": 2,
+   "text": "Home automation",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 35,
+   "x1": 98,
+   "top": 254,
+   "bottom": 263
+  },
+  {
+   "page": 2,
+   "text": "scripting",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 35,
+   "x1": 65,
+   "top": 268,
+   "bottom": 277
+  },
+  {
+   "page": 2,
+   "text": "AI prompting",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 35,
+   "x1": 81,
+   "top": 282,
+   "bottom": 291
+  },
+  {
+   "page": 2,
+   "text": "HTML coding with AI",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 35,
+   "x1": 108,
+   "top": 296,
+   "bottom": 305
+  },
+  {
+   "page": 2,
+   "text": "assistance",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 35,
+   "x1": 73,
+   "top": 309,
+   "bottom": 318
+  },
+  {
+   "page": 2,
+   "text": "This CV was created",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 35,
+   "x1": 109,
+   "top": 323,
+   "bottom": 332
+  },
+  {
+   "page": 2,
+   "text": "using HTML",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 35,
+   "x1": 78,
+   "top": 336,
+   "bottom": 345
+  },
+  {
+   "page": 2,
+   "text": "COOKING",
+   "size": 7.5,
+   "bold": true,
+   "mono": false,
+   "x0": 14,
+   "x1": 61,
+   "top": 377,
+   "bottom": 385
+  },
+  {
+   "page": 2,
+   "text": "This is my native",
+   "size": 8.5,
+   "bold": true,
+   "mono": false,
+   "x0": 23,
+   "x1": 93,
+   "top": 408,
+   "bottom": 418
+  },
+  {
+   "page": 2,
+   "text": "passion",
+   "size": 8.5,
+   "bold": true,
+   "mono": false,
+   "x0": 23,
+   "x1": 56,
+   "top": 417,
+   "bottom": 427
+  },
+  {
+   "page": 2,
+   "text": "Reduced the organization's security exposure by identifying, tracking, and remediating critical operating system",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 172,
+   "x1": 566,
+   "top": 58,
+   "bottom": 67
+  },
+  {
+   "page": 2,
+   "text": "and application vulnerabilities within agreed service levels.",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 172,
+   "x1": 379,
+   "top": 71,
+   "bottom": 80
+  },
+  {
+   "page": 2,
+   "text": "Administered Microsoft Endpoint Configuration Manager (SCCM/MECM) for software lifecycle management.",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 172,
+   "x1": 555,
+   "top": 85,
+   "bottom": 94
+  },
+  {
+   "page": 2,
+   "text": "Designed, packaged, tested, and deployed enterprise applications while ensuring compatibility, reliability, and",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 172,
+   "x1": 559,
+   "top": 100,
+   "bottom": 109
+  },
+  {
+   "page": 2,
+   "text": "compliance with corporate standards.",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 172,
+   "x1": 305,
+   "top": 112,
+   "bottom": 121
+  },
+  {
+   "page": 2,
+   "text": "Managed software deployment campaigns and monitored installation success rates through detailed reporting",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 172,
+   "x1": 561,
+   "top": 127,
+   "bottom": 136
+  },
+  {
+   "page": 2,
+   "text": "and deployment analytics.",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 172,
+   "x1": 265,
+   "top": 139,
+   "bottom": 148
+  },
+  {
+   "page": 2,
+   "text": "Developed PowerShell automation scripts to streamline software packaging, deployment processes,",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 172,
+   "x1": 527,
+   "top": 154,
+   "bottom": 163
+  },
+  {
+   "page": 2,
+   "text": "administrative tasks, and operational workflows.",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 172,
+   "x1": 342,
+   "top": 166,
+   "bottom": 175
+  },
+  {
+   "page": 2,
+   "text": "Administered VMware Horizon and VMware vSphere virtual desktop infrastructure (VDI), supporting virtual",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 172,
+   "x1": 549,
+   "top": 181,
+   "bottom": 190
+  },
+  {
+   "page": 2,
+   "text": "machines and maintaining platform availability.",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 172,
+   "x1": 337,
+   "top": 194,
+   "bottom": 203
+  },
+  {
+   "page": 2,
+   "text": "Deployed and managed enterprise mobile applications through VMware Workspace ONE (AirWatch).",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 172,
+   "x1": 530,
+   "top": 208,
+   "bottom": 217
+  },
+  {
+   "page": 2,
+   "text": "Served as backup Team Leader for the Help Desk, supporting operational coordination, workload management,",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 172,
+   "x1": 567,
+   "top": 223,
+   "bottom": 232
+  },
+  {
+   "page": 2,
+   "text": "and incident escalation when required.",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 172,
+   "x1": 309,
+   "top": 235,
+   "bottom": 244
+  },
+  {
+   "page": 2,
+   "text": "Created, maintained, and continuously improved operational documentation and technical procedures to",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 172,
+   "x1": 541,
+   "top": 250,
+   "bottom": 259
+  },
+  {
+   "page": 2,
+   "text": "standardize support activities.",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 172,
+   "x1": 278,
+   "top": 262,
+   "bottom": 271
+  },
+  {
+   "page": 2,
+   "text": "Recognized by the client for technical expertise and selected to join a strategic Identity and Access Management",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 172,
+   "x1": 570,
+   "top": 277,
+   "bottom": 286
+  },
+  {
+   "page": 2,
+   "text": "(IAM) project, reflecting a high level of trust and strong performance throughout the engagement.",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 172,
+   "x1": 515,
+   "top": 290,
+   "bottom": 299
+  },
+  {
+   "page": 2,
+   "text": "Senior IT Officer",
+   "size": 8.5,
+   "bold": true,
+   "mono": false,
+   "x0": 160,
+   "x1": 227,
+   "top": 329,
+   "bottom": 338
+  },
+  {
+   "page": 2,
+   "text": "Sogeti – Catella Bank · Mar 2018 — Mar 2021",
+   "size": 8.5,
+   "bold": false,
+   "mono": false,
+   "x0": 160,
+   "x1": 339,
+   "top": 339,
+   "bottom": 349
+  },
+  {
+   "page": 2,
+   "text": "Progressed from Service Desk Lead to Senior IT Officer, taking ownership of daily IT operations and supporting",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 172,
+   "x1": 566,
+   "top": 352,
+   "bottom": 361
+  },
+  {
+   "page": 2,
+   "text": "a critical banking environment.",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 172,
+   "x1": 280,
+   "top": 365,
+   "bottom": 374
+  },
+  {
+   "page": 2,
+   "text": "Led the Service Desk team, coordinating operational activities, managing escalations, and ensuring compliance",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 172,
+   "x1": 567,
+   "top": 379,
+   "bottom": 388
+  },
+  {
+   "page": 2,
+   "text": "with service level agreements (SLAs).",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 172,
+   "x1": 306,
+   "top": 392,
+   "bottom": 401
+  },
+  {
+   "page": 2,
+   "text": "Established and managed the Identity & Access Management (IAM / 1AM) team, defining operational processes",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 172,
+   "x1": 569,
+   "top": 406,
+   "bottom": 415
+  },
+  {
+   "page": 2,
+   "text": "and ensuring secure user lifecycle management.",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 172,
+   "x1": 345,
+   "top": 419,
+   "bottom": 428
+  },
+  {
+   "page": 2,
+   "text": "Administered and maintained enterprise Active Directory environments, including user accounts, groups,",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 172,
+   "x1": 541,
+   "top": 434,
+   "bottom": 443
+  },
+  {
+   "page": 2,
+   "text": "permissions, Group Policies, DNS, and DHCP services.",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 172,
+   "x1": 369,
+   "top": 447,
+   "bottom": 456
+  },
+  {
+   "page": 2,
+   "text": "Managed and supported Microsoft Windows Server infrastructure (2012/2016/2019), ensuring high availability",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 172,
+   "x1": 561,
+   "top": 461,
+   "bottom": 470
+  },
+  {
+   "page": 2,
+   "text": "and operational stability.",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 172,
+   "x1": 258,
+   "top": 474,
+   "bottom": 483
+  },
+  {
+   "page": 2,
+   "text": "Administered and troubleshot Citrix Virtual Apps and Desktops environments, providing secure virtual application",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 172,
+   "x1": 571,
+   "top": 488,
+   "bottom": 497
+  },
+  {
+   "page": 2,
+   "text": "and desktop delivery for end users.",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 172,
+   "x1": 297,
+   "top": 501,
+   "bottom": 510
+  },
+  {
+   "page": 2,
+   "text": "Managed Citrix ADC (NetScaler) and Citrix Application Delivery Management (ADM) to ensure reliable",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 172,
+   "x1": 534,
+   "top": 515,
+   "bottom": 524
+  },
+  {
+   "page": 2,
+   "text": "application delivery and load balancing.",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 172,
+   "x1": 312,
+   "top": 528,
+   "bottom": 537
+  },
+  {
+   "page": 2,
+   "text": "Supported Citrix ShareFile administration and secure enterprise file-sharing services.",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 172,
+   "x1": 473,
+   "top": 543,
+   "bottom": 552
+  },
+  {
+   "page": 2,
+   "text": "Monitored infrastructure and managed Wyse Thin Clients, ensuring optimal performance of virtual desktop",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 172,
+   "x1": 548,
+   "top": 557,
+   "bottom": 566
+  },
+  {
+   "page": 2,
+   "text": "environments.",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 172,
+   "x1": 222,
+   "top": 570,
+   "bottom": 579
+  },
+  {
+   "page": 2,
+   "text": "Performed advanced troubleshooting across Windows operating systems, Microsoft Office, registry",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 172,
+   "x1": 522,
+   "top": 584,
+   "bottom": 593
+  },
+  {
+   "page": 2,
+   "text": "configuration, Active Directory, networking, and enterprise infrastructure.",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 172,
+   "x1": 428,
+   "top": 597,
+   "bottom": 606
+  },
+  {
+   "page": 2,
+   "text": "Developed PowerShell and Batch scripts to automate administrative tasks, improve operational efficiency, and",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 172,
+   "x1": 562,
+   "top": 611,
+   "bottom": 620
+  },
+  {
+   "page": 2,
+   "text": "reduce manual workload.",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 172,
+   "x1": 262,
+   "top": 624,
+   "bottom": 633
+  },
+  {
+   "page": 2,
+   "text": "Administered Microsoft Exchange Server 2016, including mailbox provisioning, shared mailbox management,",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 172,
+   "x1": 558,
+   "top": 638,
+   "bottom": 647
+  },
+  {
+   "page": 2,
+   "text": "and automated administration using PowerShell.",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 172,
+   "x1": 344,
+   "top": 652,
+   "bottom": 661
+  },
+  {
+   "page": 2,
+   "text": "Managed and administered the enterprise telephony platform (XiVO / ScopServ), including user provisioning and",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 172,
+   "x1": 571,
+   "top": 666,
+   "bottom": 675
+  },
+  {
+   "page": 2,
+   "text": "operational support.",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 172,
+   "x1": 243,
+   "top": 679,
+   "bottom": 688
+  },
+  {
+   "page": 2,
+   "text": "Worked with the Evidian Identity & Access Management platform, processing daily HR imports, managing",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 172,
+   "x1": 545,
+   "top": 693,
+   "bottom": 702
+  },
+  {
+   "page": 2,
+   "text": "identity synchronization, and extracting audit data to support compliance requirements.",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 172,
+   "x1": 480,
+   "top": 706,
+   "bottom": 715
+  },
+  {
+   "page": 2,
+   "text": "Produced operational reports and performance indicators for senior management, providing visibility into IT",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 172,
+   "x1": 551,
+   "top": 720,
+   "bottom": 729
+  },
+  {
+   "page": 2,
+   "text": "service quality, operational risks, and infrastructure status.",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 172,
+   "x1": 378,
+   "top": 733,
+   "bottom": 742
+  },
+  {
+   "page": 3,
+   "text": "Collaborated with infrastructure, security, and business teams to improve IT services, strengthen operational",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 172,
+   "x1": 555,
+   "top": 58,
+   "bottom": 67
+  },
+  {
+   "page": 3,
+   "text": "processes, and support business-critical banking operations.",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 172,
+   "x1": 387,
+   "top": 71,
+   "bottom": 80
+  },
+  {
+   "page": 3,
+   "text": "Possessed working knowledge of UNIX/Linux systems, enabling effective collaboration with cross-platform",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 172,
+   "x1": 549,
+   "top": 85,
+   "bottom": 94
+  },
+  {
+   "page": 3,
+   "text": "infrastructure teams.",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 172,
+   "x1": 245,
+   "top": 98,
+   "bottom": 107
+  },
+  {
+   "page": 3,
+   "text": "IT Officer – Windows 10 Migration Project",
+   "size": 8.5,
+   "bold": true,
+   "mono": false,
+   "x0": 160,
+   "x1": 330,
+   "top": 137,
+   "bottom": 146
+  },
+  {
+   "page": 3,
+   "text": "Aubay – Court of Auditors (Cour des comptes) · Nov 2017 — Feb 2018",
+   "size": 8.5,
+   "bold": false,
+   "mono": false,
+   "x0": 160,
+   "x1": 442,
+   "top": 147,
+   "bottom": 157
+  },
+  {
+   "page": 3,
+   "text": "Participated in the deployment of over 1,200 Windows 10 workstations as part of a large-scale migration project.",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 172,
+   "x1": 569,
+   "top": 160,
+   "bottom": 169
+  },
+  {
+   "page": 3,
+   "text": "Performed hardware upgrades (HDD to SSD), workstation imaging, configuration, and deployment.",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 172,
+   "x1": 523,
+   "top": 175,
+   "bottom": 184
+  },
+  {
+   "page": 3,
+   "text": "Scheduled migration appointments and provided end-user support during the transition.",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 172,
+   "x1": 482,
+   "top": 189,
+   "bottom": 198
+  },
+  {
+   "page": 3,
+   "text": "Conducted hardware inventory and asset verification throughout the project.",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 172,
+   "x1": 441,
+   "top": 203,
+   "bottom": 212
+  },
+  {
+   "page": 3,
+   "text": "IT Technician / Entrepreneur",
+   "size": 8.5,
+   "bold": true,
+   "mono": false,
+   "x0": 160,
+   "x1": 276,
+   "top": 242,
+   "bottom": 252
+  },
+  {
+   "page": 3,
+   "text": "Independent (My Compagny) – IT Services Business · Sep 2016 — Sep 2017",
+   "size": 8.5,
+   "bold": false,
+   "mono": false,
+   "x0": 160,
+   "x1": 467,
+   "top": 253,
+   "bottom": 262
+  },
+  {
+   "page": 3,
+   "text": "Founded and operated a small IT services business providing on-site and remote technical support.",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 172,
+   "x1": 524,
+   "top": 266,
+   "bottom": 275
+  },
+  {
+   "page": 3,
+   "text": "Performed PC and Mac troubleshooting, repairs, and system maintenance for private clients.",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 172,
+   "x1": 500,
+   "top": 280,
+   "bottom": 289
+  },
+  {
+   "page": 3,
+   "text": "Designed and created basic websites for individuals and small businesses.",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 172,
+   "x1": 437,
+   "top": 295,
+   "bottom": 304
+  },
+  {
+   "page": 3,
+   "text": "Closed the activity after one year to refocus on corporate IT opportunities.",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 172,
+   "x1": 433,
+   "top": 309,
+   "bottom": 318
+  },
+  {
+   "page": 3,
+   "text": "Senior IT Technician / Lead Technician",
+   "size": 8.5,
+   "bold": true,
+   "mono": false,
+   "x0": 160,
+   "x1": 318,
+   "top": 347,
+   "bottom": 357
+  },
+  {
+   "page": 3,
+   "text": "Darty (France) · Mar 2008 — Aug 2016",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 160,
+   "x1": 310,
+   "top": 358,
+   "bottom": 367
+  },
+  {
+   "page": 3,
+   "text": "Progressed to Lead Technician, supporting and guiding other technicians within the service team.",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 172,
+   "x1": 516,
+   "top": 371,
+   "bottom": 380
+  },
+  {
+   "page": 3,
+   "text": "Provided on-site and workshop-based troubleshooting for PC and Mac systems.",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 172,
+   "x1": 455,
+   "top": 385,
+   "bottom": 394
+  },
+  {
+   "page": 3,
+   "text": "Diagnosed and resolved a wide range of hardware, software, and connectivity issues for retail customers.",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 172,
+   "x1": 545,
+   "top": 400,
+   "bottom": 409
+  },
+  {
+   "page": 3,
+   "text": "Performed ADSL and cable network diagnostics using dedicated testing tools (e.g. ARGUS..",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 172,
+   "x1": 498,
+   "top": 415,
+   "bottom": 424
+  },
+  {
+   "page": 3,
+   "text": "Investigated and removed malware, ensuring system security and data protection.",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 172,
+   "x1": 463,
+   "top": 429,
+   "bottom": 438
+  },
+  {
+   "page": 3,
+   "text": "Advised customers on cybersecurity best practices, including antivirus solutions and data backup strategies.",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 172,
+   "x1": 555,
+   "top": 443,
+   "bottom": 452
+  },
+  {
+   "page": 3,
+   "text": "EDUCATION",
+   "size": 8.5,
+   "bold": true,
+   "mono": false,
+   "x0": 151,
+   "x1": 214,
+   "top": 483,
+   "bottom": 493
+  },
+  {
+   "page": 3,
+   "text": "IT Support Technician Training",
+   "size": 8.5,
+   "bold": true,
+   "mono": false,
+   "x0": 160,
+   "x1": 286,
+   "top": 515,
+   "bottom": 525
+  },
+  {
+   "page": 3,
+   "text": "AFPA – Corte, Corsica · 2006 — 2007",
+   "size": 8.5,
+   "bold": false,
+   "mono": false,
+   "x0": 160,
+   "x1": 311,
+   "top": 526,
+   "bottom": 535
+  },
+  {
+   "page": 3,
+   "text": "Completed vocational training in IT support and technical assistance.",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 172,
+   "x1": 416,
+   "top": 539,
+   "bottom": 548
+  },
+  {
+   "page": 3,
+   "text": "Acquired foundational skills in hardware troubleshooting, software support, and user assistance.",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 172,
+   "x1": 512,
+   "top": 553,
+   "bottom": 562
+  },
+  {
+   "page": 3,
+   "text": "Diplôme National du Brevet",
+   "size": 8.5,
+   "bold": true,
+   "mono": false,
+   "x0": 160,
+   "x1": 273,
+   "top": 592,
+   "bottom": 601
+  },
+  {
+   "page": 3,
+   "text": "Académie Nancy-Metz – Behren-lês-Forbach · 2002",
+   "size": 8.5,
+   "bold": true,
+   "mono": false,
+   "x0": 160,
+   "x1": 371,
+   "top": 602,
+   "bottom": 612
+  },
+  {
+   "page": 3,
+   "text": "General secondary education diploma.",
+   "size": 8,
+   "bold": false,
+   "mono": false,
+   "x0": 160,
+   "x1": 297,
+   "top": 616,
+   "bottom": 625
+  }
+ ],
+ "meta": {
+  "title": "IT INCIDENT MANAGER & AUTOMATION SPECIALIST",
+  "sourceFilename": "cv.pdf",
+  "sourceKind": "pdf",
+  "pageCount": 3,
+  "ocr": {
+   "used": false,
+   "pages": []
+  },
+  "language": null,
+  "warnings": []
+ },
+ "images": [
+  {
+   "id": "img-1",
+   "w": 241,
+   "h": 243,
+   "mime": "image/png",
+   "bytes": 74785
+  }
+ ],
+ "blocks": [
+  {
+   "type": "heading",
+   "level": 1,
+   "inlines": [
+    {
+     "type": "text",
+     "text": "JONATHAN BOI"
+    }
+   ]
+  },
+  {
+   "type": "paragraph",
+   "inlines": [
+    {
+     "type": "text",
+     "text": "IT INCIDENT MANAGER & AUTOMATION SPECIALIST"
+    }
+   ]
+  },
+  {
+   "type": "image",
+   "imageId": "img-1",
+   "alt": "Page 1"
+  },
+  {
+   "type": "heading",
+   "level": 2,
+   "inlines": [
+    {
+     "type": "text",
+     "text": "CONTACT"
+    }
+   ]
+  },
+  {
+   "type": "list",
+   "ordered": false,
+   "items": [
+    {
+     "blocks": [
+      {
+       "type": "paragraph",
+       "inlines": [
+        {
+         "type": "text",
+         "text": "Hettange-Grande"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "blocks": [
+      {
+       "type": "paragraph",
+       "inlines": [
+        {
+         "type": "text",
+         "text": "+33 6 11 22 85 60"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "blocks": [
+      {
+       "type": "paragraph",
+       "inlines": [
+        {
+         "type": "link",
+         "href": "mailto:john572b@hotmail.com",
+         "children": [
+          {
+           "type": "text",
+           "text": "john572b@hotmail.com"
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "blocks": [
+      {
+       "type": "paragraph",
+       "inlines": [
+        {
+         "type": "text",
+         "text": "Status : Married"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "blocks": [
+      {
+       "type": "paragraph",
+       "inlines": [
+        {
+         "type": "text",
+         "text": "LinkdlnJonathan Boi"
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "type": "heading",
+   "level": 2,
+   "inlines": [
+    {
+     "type": "text",
+     "text": "SKILLS"
+    }
+   ]
+  },
+  {
+   "type": "list",
+   "ordered": false,
+   "items": [
+    {
+     "blocks": [
+      {
+       "type": "paragraph",
+       "inlines": [
+        {
+         "type": "text",
+         "text": "PowerShell"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "blocks": [
+      {
+       "type": "paragraph",
+       "inlines": [
+        {
+         "type": "text",
+         "text": "HTML"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "blocks": [
+      {
+       "type": "paragraph",
+       "inlines": [
+        {
+         "type": "text",
+         "text": "VMware"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "blocks": [
+      {
+       "type": "paragraph",
+       "inlines": [
+        {
+         "type": "text",
+         "text": "Service Now"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "blocks": [
+      {
+       "type": "paragraph",
+       "inlines": [
+        {
+         "type": "text",
+         "text": "SCCM"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "blocks": [
+      {
+       "type": "paragraph",
+       "inlines": [
+        {
+         "type": "text",
+         "text": "App Packaging"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "blocks": [
+      {
+       "type": "paragraph",
+       "inlines": [
+        {
+         "type": "text",
+         "text": "Root Cause Analysis"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "blocks": [
+      {
+       "type": "paragraph",
+       "inlines": [
+        {
+         "type": "text",
+         "text": "INC Management"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "blocks": [
+      {
+       "type": "paragraph",
+       "inlines": [
+        {
+         "type": "text",
+         "text": "Linux"
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "type": "heading",
+   "level": 2,
+   "inlines": [
+    {
+     "type": "text",
+     "text": "LANGUAGE"
+    }
+   ]
+  },
+  {
+   "type": "paragraph",
+   "inlines": [
+    {
+     "type": "text",
+     "text": "French mother Tongue English Fluent"
+    }
+   ]
+  },
+  {
+   "type": "heading",
+   "level": 2,
+   "inlines": [
+    {
+     "type": "text",
+     "text": "CERTIFS"
+    }
+   ]
+  },
+  {
+   "type": "heading",
+   "level": 3,
+   "inlines": [
+    {
+     "type": "text",
+     "text": "ITIL Foundation v3"
+    }
+   ]
+  },
+  {
+   "type": "paragraph",
+   "inlines": [
+    {
+     "type": "text",
+     "text": "2019"
+    }
+   ]
+  },
+  {
+   "type": "paragraph",
+   "inlines": [
+    {
+     "type": "text",
+     "text": "Certification obtenue en"
+    }
+   ]
+  },
+  {
+   "type": "heading",
+   "level": 2,
+   "inlines": [
+    {
+     "type": "text",
+     "text": "CCNA"
+    }
+   ]
+  },
+  {
+   "type": "paragraph",
+   "inlines": [
+    {
+     "type": "text",
+     "text": "Cisco Certified Network Associate – Network Certified (Afpa 2007)"
+    }
+   ]
+  },
+  {
+   "type": "heading",
+   "level": 2,
+   "inlines": [
+    {
+     "type": "text",
+     "text": "PROFILE"
+    }
+   ]
+  },
+  {
+   "type": "paragraph",
+   "inlines": [
+    {
+     "type": "text",
+     "text": "IT professional with strong experience in Incident Management, IT Operations, Endpoint Management (SCCM/MECM), IAM, and Virtualized environments (Citrix/VMware). Experienced in managing complex incidents, improving service performance through dashboards and KPI reporting, and driving resolution of critical issues in enterprise environments. Solid technical background in Windows Server, Active Directory, Exchange, Tenable.sc, and PowerShell automation, with a strong focus on stability, security, and operational efficiency."
+    }
+   ]
+  },
+  {
+   "type": "heading",
+   "level": 2,
+   "inlines": [
+    {
+     "type": "text",
+     "text": "EXPERIENCE"
+    }
+   ]
+  },
+  {
+   "type": "heading",
+   "level": 3,
+   "inlines": [
+    {
+     "type": "text",
+     "text": "Incident Manager"
+    }
+   ]
+  },
+  {
+   "type": "paragraph",
+   "inlines": [
+    {
+     "type": "text",
+     "text": "Sogeti - European Parliament · Jan 2026 — Present"
+    }
+   ]
+  },
+  {
+   "type": "paragraph",
+   "inlines": [
+    {
+     "type": "text",
+     "text": "Led the end-to-end management of critical IT incidents across multiple infrastructure and workplace services, ensuring timely resolution and minimizing business impact."
+    }
+   ]
+  },
+  {
+   "type": "paragraph",
+   "inlines": [
+    {
+     "type": "text",
+     "text": "Coordinated daily operational reviews with technical teams (Group Policy, Software Packaging, WSUS, Windows Master Image, and other infrastructure teams) to identify blockers, define priorities, and accelerate incident resolution."
+    }
+   ]
+  },
+  {
+   "type": "paragraph",
+   "inlines": [
+    {
+     "type": "text",
+     "text": "Conducted in-depth analysis of ongoing Incident and ServiceNow (SNOW) task queues, driving continuous improvement in ticket handling and operational efficiency."
+    }
+   ]
+  },
+  {
+   "type": "paragraph",
+   "inlines": [
+    {
+     "type": "text",
+     "text": "Designed and developed interactive ServiceNow dashboards to provide real-time visibility of incident status, workload distribution, and operational health."
+    }
+   ]
+  },
+  {
+   "type": "paragraph",
+   "inlines": [
+    {
+     "type": "text",
+     "text": "Created executive KPI dashboards at management's request, enabling data-driven decision-making and improving reporting on operational performance."
+    }
+   ]
+  },
+  {
+   "type": "paragraph",
+   "inlines": [
+    {
+     "type": "text",
+     "text": "Investigated and troubleshot complex technical issues, providing root cause analysis and coordinating crossfunctional teams to restore services efficiently."
+    }
+   ]
+  },
+  {
+   "type": "paragraph",
+   "inlines": [
+    {
+     "type": "text",
+     "text": "Took ownership of long-standing, high-priority incidents that had remained unresolved for extended periods, performing detailed investigations that significantly reduced the backlog of critical tickets."
+    }
+   ]
+  },
+  {
+   "type": "paragraph",
+   "inlines": [
+    {
+     "type": "text",
+     "text": "Improved incident governance by implementing structured monitoring and reporting processes, resulting in measurable improvements in resolution times and overall service quality."
+    }
+   ]
+  },
+  {
+   "type": "paragraph",
+   "inlines": [
+    {
+     "type": "text",
+     "text": "Leveraged PowerShell to automate repetitive administrative tasks and support operational activities."
+    }
+   ]
+  },
+  {
+   "type": "paragraph",
+   "inlines": [
+    {
+     "type": "text",
+     "text": "Selected to join a newly established PowerShell Expert Team following a technical assessment."
+    }
+   ]
+  },
+  {
+   "type": "paragraph",
+   "inlines": [
+    {
+     "type": "text",
+     "text": "Developed a PowerShell scripting exercise used as part of the team's entry evaluation process the script was reviewed and approved by senior PowerShell experts, validating my technical expertise and securing my position within the expert group."
+    }
+   ]
+  },
+  {
+   "type": "heading",
+   "level": 3,
+   "inlines": [
+    {
+     "type": "text",
+     "text": "SCCM Packager & Vulnerability Management Engineer"
+    }
+   ]
+  },
+  {
+   "type": "paragraph",
+   "inlines": [
+    {
+     "type": "text",
+     "text": "Sogeti – Intesa Sanpaolo Bank · Apr 2021 — Dec 2025"
+    }
+   ]
+  },
+  {
+   "type": "paragraph",
+   "inlines": [
+    {
+     "type": "text",
+     "text": "Provided Level 2 and Level 3 technical support for enterprise Windows environments, ensuring rapid resolution of complex infrastructure and endpoint issues."
+    }
+   ]
+  },
+  {
+   "type": "paragraph",
+   "inlines": [
+    {
+     "type": "text",
+     "text": "Acted as a technical escalation point for Service Desk teams, providing guidance and expertise to first- and second-line support engineers."
+    }
+   ]
+  },
+  {
+   "type": "paragraph",
+   "inlines": [
+    {
+     "type": "text",
+     "text": "Managed enterprise vulnerability remediation activities in close collaboration with the Information Security team. Performed vulnerability assessments using Tenable.sc, analyzed scan results, prioritized remediation efforts based on business impact and security risk, and coordinated mitigation actions across multiple infrastructure teams."
+    }
+   ]
+  },
+  {
+   "type": "heading",
+   "level": 2,
+   "inlines": [
+    {
+     "type": "text",
+     "text": "TRAVELS"
+    }
+   ]
+  },
+  {
+   "type": "heading",
+   "level": 3,
+   "inlines": [
+    {
+     "type": "text",
+     "text": "Main Travels"
+    }
+   ]
+  },
+  {
+   "type": "list",
+   "ordered": false,
+   "items": [
+    {
+     "blocks": [
+      {
+       "type": "paragraph",
+       "inlines": [
+        {
+         "type": "text",
+         "text": "Thailand"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "blocks": [
+      {
+       "type": "paragraph",
+       "inlines": [
+        {
+         "type": "text",
+         "text": "Morocco"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "blocks": [
+      {
+       "type": "paragraph",
+       "inlines": [
+        {
+         "type": "text",
+         "text": "Jamaica"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "blocks": [
+      {
+       "type": "paragraph",
+       "inlines": [
+        {
+         "type": "text",
+         "text": "Ireland"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "blocks": [
+      {
+       "type": "paragraph",
+       "inlines": [
+        {
+         "type": "text",
+         "text": "Spain"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "blocks": [
+      {
+       "type": "paragraph",
+       "inlines": [
+        {
+         "type": "text",
+         "text": "Turkey"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "blocks": [
+      {
+       "type": "paragraph",
+       "inlines": [
+        {
+         "type": "text",
+         "text": "Dubai"
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "type": "heading",
+   "level": 2,
+   "inlines": [
+    {
+     "type": "text",
+     "text": "LEARNING"
+    }
+   ]
+  },
+  {
+   "type": "paragraph",
+   "inlines": [
+    {
+     "type": "text",
+     "text": "Home automation scripting"
+    }
+   ]
+  },
+  {
+   "type": "paragraph",
+   "inlines": [
+    {
+     "type": "text",
+     "text": "AI prompting HTML coding with AI assistance"
+    }
+   ]
+  },
+  {
+   "type": "paragraph",
+   "inlines": [
+    {
+     "type": "text",
+     "text": "This CV was created using HTML"
+    }
+   ]
+  },
+  {
+   "type": "heading",
+   "level": 2,
+   "inlines": [
+    {
+     "type": "text",
+     "text": "COOKING"
+    }
+   ]
+  },
+  {
+   "type": "paragraph",
+   "inlines": [
+    {
+     "type": "text",
+     "text": "This is my native passion",
+     "bold": true
+    }
+   ]
+  },
+  {
+   "type": "paragraph",
+   "inlines": [
+    {
+     "type": "text",
+     "text": "Reduced the organization's security exposure by identifying, tracking, and remediating critical operating system and application vulnerabilities within agreed service levels."
+    }
+   ]
+  },
+  {
+   "type": "paragraph",
+   "inlines": [
+    {
+     "type": "text",
+     "text": "Administered Microsoft Endpoint Configuration Manager (SCCM/MECM) for software lifecycle management. Designed, packaged, tested, and deployed enterprise applications while ensuring compatibility, reliability, and compliance with corporate standards."
+    }
+   ]
+  },
+  {
+   "type": "paragraph",
+   "inlines": [
+    {
+     "type": "text",
+     "text": "Managed software deployment campaigns and monitored installation success rates through detailed reporting and deployment analytics."
+    }
+   ]
+  },
+  {
+   "type": "paragraph",
+   "inlines": [
+    {
+     "type": "text",
+     "text": "Developed PowerShell automation scripts to streamline software packaging, deployment processes, administrative tasks, and operational workflows."
+    }
+   ]
+  },
+  {
+   "type": "paragraph",
+   "inlines": [
+    {
+     "type": "text",
+     "text": "Administered VMware Horizon and VMware vSphere virtual desktop infrastructure (VDI), supporting virtual machines and maintaining platform availability."
+    }
+   ]
+  },
+  {
+   "type": "paragraph",
+   "inlines": [
+    {
+     "type": "text",
+     "text": "Deployed and managed enterprise mobile applications through VMware Workspace ONE (AirWatch)."
+    }
+   ]
+  },
+  {
+   "type": "paragraph",
+   "inlines": [
+    {
+     "type": "text",
+     "text": "Served as backup Team Leader for the Help Desk, supporting operational coordination, workload management, and incident escalation when required."
+    }
+   ]
+  },
+  {
+   "type": "paragraph",
+   "inlines": [
+    {
+     "type": "text",
+     "text": "Created, maintained, and continuously improved operational documentation and technical procedures to standardize support activities."
+    }
+   ]
+  },
+  {
+   "type": "paragraph",
+   "inlines": [
+    {
+     "type": "text",
+     "text": "Recognized by the client for technical expertise and selected to join a strategic Identity and Access Management (IAM) project, reflecting a high level of trust and strong performance throughout the engagement."
+    }
+   ]
+  },
+  {
+   "type": "heading",
+   "level": 3,
+   "inlines": [
+    {
+     "type": "text",
+     "text": "Senior IT Officer"
+    }
+   ]
+  },
+  {
+   "type": "paragraph",
+   "inlines": [
+    {
+     "type": "text",
+     "text": "Sogeti – Catella Bank",
+     "bold": true
+    },
+    {
+     "type": "text",
+     "text": " · Mar 2018 — Mar 2021"
+    }
+   ]
+  },
+  {
+   "type": "paragraph",
+   "inlines": [
+    {
+     "type": "text",
+     "text": "Progressed from Service Desk Lead to Senior IT Officer, taking ownership of daily IT operations and supporting a critical banking environment."
+    }
+   ]
+  },
+  {
+   "type": "paragraph",
+   "inlines": [
+    {
+     "type": "text",
+     "text": "Led the Service Desk team, coordinating operational activities, managing escalations, and ensuring compliance with service level agreements (SLAs)."
+    }
+   ]
+  },
+  {
+   "type": "paragraph",
+   "inlines": [
+    {
+     "type": "text",
+     "text": "Established and managed the Identity & Access Management (IAM / 1AM) team, defining operational processes and ensuring secure user lifecycle management."
+    }
+   ]
+  },
+  {
+   "type": "paragraph",
+   "inlines": [
+    {
+     "type": "text",
+     "text": "Administered and maintained enterprise Active Directory environments, including user accounts, groups, permissions, Group Policies, DNS, and DHCP services."
+    }
+   ]
+  },
+  {
+   "type": "paragraph",
+   "inlines": [
+    {
+     "type": "text",
+     "text": "Managed and supported Microsoft Windows Server infrastructure (2012/2016/2019), ensuring high availability and operational stability."
+    }
+   ]
+  },
+  {
+   "type": "paragraph",
+   "inlines": [
+    {
+     "type": "text",
+     "text": "Administered and troubleshot Citrix Virtual Apps and Desktops environments, providing secure virtual application and desktop delivery for end users."
+    }
+   ]
+  },
+  {
+   "type": "paragraph",
+   "inlines": [
+    {
+     "type": "text",
+     "text": "Managed Citrix ADC (NetScaler) and Citrix Application Delivery Management (ADM) to ensure reliable"
+    }
+   ]
+  },
+  {
+   "type": "paragraph",
+   "inlines": [
+    {
+     "type": "text",
+     "text": "application delivery and load balancing."
+    }
+   ]
+  },
+  {
+   "type": "paragraph",
+   "inlines": [
+    {
+     "type": "text",
+     "text": "Supported Citrix ShareFile administration and secure enterprise file-sharing services."
+    }
+   ]
+  },
+  {
+   "type": "paragraph",
+   "inlines": [
+    {
+     "type": "text",
+     "text": "Monitored infrastructure and managed Wyse Thin Clients, ensuring optimal performance of virtual desktop environments."
+    }
+   ]
+  },
+  {
+   "type": "paragraph",
+   "inlines": [
+    {
+     "type": "text",
+     "text": "Performed advanced troubleshooting across Windows operating systems, Microsoft Office, registry"
+    }
+   ]
+  },
+  {
+   "type": "paragraph",
+   "inlines": [
+    {
+     "type": "text",
+     "text": "configuration, Active Directory, networking, and enterprise infrastructure."
+    }
+   ]
+  },
+  {
+   "type": "paragraph",
+   "inlines": [
+    {
+     "type": "text",
+     "text": "Developed PowerShell and Batch scripts to automate administrative tasks, improve operational efficiency, and reduce manual workload."
+    }
+   ]
+  },
+  {
+   "type": "paragraph",
+   "inlines": [
+    {
+     "type": "text",
+     "text": "Administered Microsoft Exchange Server 2016, including mailbox provisioning, shared mailbox management, and automated administration using PowerShell."
+    }
+   ]
+  },
+  {
+   "type": "paragraph",
+   "inlines": [
+    {
+     "type": "text",
+     "text": "Managed and administered the enterprise telephony platform (XiVO / ScopServ), including user provisioning and operational support."
+    }
+   ]
+  },
+  {
+   "type": "paragraph",
+   "inlines": [
+    {
+     "type": "text",
+     "text": "Worked with the Evidian Identity & Access Management platform, processing daily HR imports, managing identity synchronization, and extracting audit data to support compliance requirements."
+    }
+   ]
+  },
+  {
+   "type": "paragraph",
+   "inlines": [
+    {
+     "type": "text",
+     "text": "Produced operational reports and performance indicators for senior management, providing visibility into IT service quality, operational risks, and infrastructure status."
+    }
+   ]
+  },
+  {
+   "type": "paragraph",
+   "inlines": [
+    {
+     "type": "text",
+     "text": "Collaborated with infrastructure, security, and business teams to improve IT services, strengthen operational processes, and support business-critical banking operations."
+    }
+   ]
+  },
+  {
+   "type": "paragraph",
+   "inlines": [
+    {
+     "type": "text",
+     "text": "Possessed working knowledge of UNIX/Linux systems, enabling effective collaboration with cross-platform infrastructure teams."
+    }
+   ]
+  },
+  {
+   "type": "heading",
+   "level": 3,
+   "inlines": [
+    {
+     "type": "text",
+     "text": "IT Officer – Windows 10 Migration Project"
+    }
+   ]
+  },
+  {
+   "type": "paragraph",
+   "inlines": [
+    {
+     "type": "text",
+     "text": "Aubay – Court of Auditors (Cour des comptes)",
+     "bold": true
+    },
+    {
+     "type": "text",
+     "text": " · Nov 2017 — Feb 2018"
+    }
+   ]
+  },
+  {
+   "type": "paragraph",
+   "inlines": [
+    {
+     "type": "text",
+     "text": "Participated in the deployment of over 1,200 Windows 10 workstations as part of a large-scale migration project. Performed hardware upgrades (HDD to SSD), workstation imaging, configuration, and deployment."
+    }
+   ]
+  },
+  {
+   "type": "paragraph",
+   "inlines": [
+    {
+     "type": "text",
+     "text": "Scheduled migration appointments and provided end-user support during the transition."
+    }
+   ]
+  },
+  {
+   "type": "paragraph",
+   "inlines": [
+    {
+     "type": "text",
+     "text": "Conducted hardware inventory and asset verification throughout the project."
+    }
+   ]
+  },
+  {
+   "type": "heading",
+   "level": 3,
+   "inlines": [
+    {
+     "type": "text",
+     "text": "IT Technician / Entrepreneur"
+    }
+   ]
+  },
+  {
+   "type": "paragraph",
+   "inlines": [
+    {
+     "type": "text",
+     "text": "Independent (My Compagny) – IT Services Business",
+     "bold": true
+    },
+    {
+     "type": "text",
+     "text": " · Sep 2016 — Sep 2017"
+    }
+   ]
+  },
+  {
+   "type": "paragraph",
+   "inlines": [
+    {
+     "type": "text",
+     "text": "Founded and operated a small IT services business providing on-site and remote technical support."
+    }
+   ]
+  },
+  {
+   "type": "paragraph",
+   "inlines": [
+    {
+     "type": "text",
+     "text": "Performed PC and Mac troubleshooting, repairs, and system maintenance for private clients."
+    }
+   ]
+  },
+  {
+   "type": "paragraph",
+   "inlines": [
+    {
+     "type": "text",
+     "text": "Designed and created basic websites for individuals and small businesses."
+    }
+   ]
+  },
+  {
+   "type": "paragraph",
+   "inlines": [
+    {
+     "type": "text",
+     "text": "Closed the activity after one year to refocus on corporate IT opportunities."
+    }
+   ]
+  },
+  {
+   "type": "heading",
+   "level": 3,
+   "inlines": [
+    {
+     "type": "text",
+     "text": "Senior IT Technician / Lead Technician"
+    }
+   ]
+  },
+  {
+   "type": "paragraph",
+   "inlines": [
+    {
+     "type": "text",
+     "text": "Darty (France)",
+     "bold": true
+    },
+    {
+     "type": "text",
+     "text": " · Mar 2008 — Aug 2016 Progressed to Lead Technician, supporting and guiding other technicians within the service team."
+    }
+   ]
+  },
+  {
+   "type": "paragraph",
+   "inlines": [
+    {
+     "type": "text",
+     "text": "Provided on-site and workshop-based troubleshooting for PC and Mac systems."
+    }
+   ]
+  },
+  {
+   "type": "paragraph",
+   "inlines": [
+    {
+     "type": "text",
+     "text": "Diagnosed and resolved a wide range of hardware, software, and connectivity issues for retail customers. Performed ADSL and cable network diagnostics using dedicated testing tools (e.g. ARGUS.."
+    }
+   ]
+  },
+  {
+   "type": "paragraph",
+   "inlines": [
+    {
+     "type": "text",
+     "text": "Investigated and removed malware, ensuring system security and data protection."
+    }
+   ]
+  },
+  {
+   "type": "paragraph",
+   "inlines": [
+    {
+     "type": "text",
+     "text": "Advised customers on cybersecurity best practices, including antivirus solutions and data backup strategies."
+    }
+   ]
+  },
+  {
+   "type": "heading",
+   "level": 2,
+   "inlines": [
+    {
+     "type": "text",
+     "text": "EDUCATION"
+    }
+   ]
+  },
+  {
+   "type": "heading",
+   "level": 3,
+   "inlines": [
+    {
+     "type": "text",
+     "text": "IT Support Technician Training"
+    }
+   ]
+  },
+  {
+   "type": "paragraph",
+   "inlines": [
+    {
+     "type": "text",
+     "text": "AFPA – Corte, Corsica",
+     "bold": true
+    },
+    {
+     "type": "text",
+     "text": " · 2006 — 2007"
+    }
+   ]
+  },
+  {
+   "type": "paragraph",
+   "inlines": [
+    {
+     "type": "text",
+     "text": "Completed vocational training in IT support and technical assistance."
+    }
+   ]
+  },
+  {
+   "type": "paragraph",
+   "inlines": [
+    {
+     "type": "text",
+     "text": "Acquired foundational skills in hardware troubleshooting, software support, and user assistance."
+    }
+   ]
+  },
+  {
+   "type": "heading",
+   "level": 3,
+   "inlines": [
+    {
+     "type": "text",
+     "text": "Diplôme National du Brevet"
+    }
+   ]
+  },
+  {
+   "type": "heading",
+   "level": 3,
+   "inlines": [
+    {
+     "type": "text",
+     "text": "Académie Nancy-Metz – Behren-lês-Forbach · 2002"
+    }
+   ]
+  },
+  {
+   "type": "paragraph",
+   "inlines": [
+    {
+     "type": "text",
+     "text": "General secondary education diploma."
+    }
+   ]
+  }
+ ]
+}

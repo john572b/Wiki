@@ -17,6 +17,8 @@ export interface PdfParseOptions {
   /** Conserver l'image de page entière des pages scannées comme image du document. */
   includePageScans?: boolean;
   onStage?: (stage: 'extract' | 'ocr', page: number, total: number) => void;
+  /** Développement : reçoit les lignes extraites (après nettoyage) pour ajuster les heuristiques. */
+  onDebugLines?: (lines: { page: number; text: string; size: number; bold: boolean; mono: boolean; x0: number; x1: number; top: number; bottom: number }[]) => void;
 }
 
 interface Item {
@@ -41,6 +43,8 @@ interface Line {
   bold: boolean;
   mono: boolean;
   page: number;
+  /** Titre en lettres espacées (« C O N T A C T »), déjà recompacté. */
+  spacedCaps: boolean;
 }
 
 interface PageImage {
@@ -122,6 +126,7 @@ export async function parsePdf(buffer: ArrayBuffer, opts: PdfParseOptions): Prom
       if (set.size >= 3 || (pdf.numPages >= 2 && set.size >= Math.max(2, pdf.numPages / 2))) decorative.add(hash);
     }
     removeHeadersFooters(pages);
+    opts.onDebugLines?.(pages.flatMap((p) => p.lines.map((l) => ({ page: l.page, text: l.text, size: l.size, bold: l.bold, mono: l.mono, x0: Math.round(l.x0), x1: Math.round(l.x1), top: Math.round(l.top), bottom: Math.round(l.bottom) }))));
     const bodySize = bodyFontSize(pages);
     const headingLevels = computeHeadingLevels(pages, bodySize);
 
@@ -155,7 +160,7 @@ export async function parsePdf(buffer: ArrayBuffer, opts: PdfParseOptions): Prom
         }
       } else {
         const textBlocks = linesToBlocks(pd.lines, bodySize, headingLevels, pageImages, imageBlock);
-        pageBlocks.push(...textBlocks);
+        pageBlocks.push(...shortRunsToLists(textBlocks));
       }
       appendPageBlocks(blocks, pageBlocks);
     }
@@ -253,13 +258,18 @@ async function extractPage(page: PDFPageProxy, index: number): Promise<PageData>
       cur.top = Math.min(cur.top, item.y - size * 0.85);
       cur.bottom = Math.max(cur.bottom, item.y + size * 0.25);
     } else {
-      cur = { items: [item], text: it.str, x0: item.x, x1: item.x + item.w, top: item.y - size * 0.85, bottom: item.y + size * 0.25, size, bold: false, mono: false, page: index };
+      cur = { items: [item], text: it.str, x0: item.x, x1: item.x + item.w, top: item.y - size * 0.85, bottom: item.y + size * 0.25, size, bold: false, mono: false, page: index, spacedCaps: false };
       lines.push(cur);
     }
     prevEOL = !!it.hasEOL;
   }
   for (const l of lines) {
     l.text = l.text.replace(/\s+/g, ' ').trim();
+    const collapsed = collapseSpacedCaps(l.text);
+    if (collapsed) {
+      l.text = collapsed;
+      l.spacedCaps = true;
+    }
     const chars = l.items.reduce((s, i) => s + i.str.length, 0) || 1;
     const sizeWeights = new Map<number, number>();
     let boldChars = 0, monoChars = 0;
@@ -372,6 +382,21 @@ async function imageObjectToAsset(page: PDFPageProxy, objId: string, pageIndex: 
   }
 }
 
+/** « C O N T A C T » → « CONTACT » : au moins 3 jetons, majoritairement d'une lettre, tout en majuscules. */
+export function collapseSpacedCaps(text: string): string | null {
+  const tokens = text.split(' ').filter(Boolean);
+  if (tokens.length < 3) return null;
+  const singles = tokens.filter((t) => t.length === 1).length;
+  if (singles / tokens.length < 0.6) return null;
+  const joined = tokens.join('');
+  if (!/^[A-ZÀ-Ý0-9&'’\-]+$/.test(joined) || !/[A-ZÀ-Ý]{3}/.test(joined)) return null;
+  return joined;
+}
+
+function isAllCaps(text: string): boolean {
+  return text.length >= 3 && text.length <= 40 && /^[A-ZÀ-Ý0-9&'’\-\s.]+$/.test(text) && /[A-ZÀ-Ý]{3}/.test(text) && !/[.:;,]$/.test(text);
+}
+
 function isScanned(pd: PageData): boolean {
   const pageArea = pd.width * pd.height;
   const bigImage = pd.images.some((im) => im.area >= 0.45 * pageArea);
@@ -441,7 +466,7 @@ function bodyFontSize(pages: PageData[]): number {
   return sorted[0]?.[0] ?? 11;
 }
 
-interface HeadingLevels { bySize: Map<number, number>; boldLevel: number }
+interface HeadingLevels { bySize: Map<number, number>; capsLevel: number; boldLevel: number }
 
 function isSizeHeading(l: Line, body: number): boolean {
   return l.size >= body * 1.15 && l.text.length <= 120 && !l.mono;
@@ -464,11 +489,59 @@ function computeHeadingLevels(pages: PageData[], body: number): HeadingLevels {
   sorted.forEach((s, i) => bySize.set(s, i + 1));
   // Les tailles au-delà des 4 premières sont rattachées au dernier niveau.
   for (const s of sizes) if (!bySize.has(s)) bySize.set(s, sorted.length);
-  return { bySize, boldLevel: Math.min(sorted.length + 1, 5) };
+  const hasCaps = pages.some((p) => p.lines.some((l) => l.spacedCaps));
+  const capsLevel = Math.min(sorted.length + 1, 5);
+  return { bySize, capsLevel, boldLevel: Math.min(capsLevel + (hasCaps ? 1 : 0), 6) };
+}
+
+/** Titre de section en majuscules : isolé par un espace au-dessus et suivi de près par du contenu. */
+function isCapsHeading(l: Line, body: number, prev: Line | undefined, next: Line | undefined): boolean {
+  if (l.spacedCaps) return true;
+  if (!isAllCaps(l.text) || l.mono || l.size < body * 0.85) return false;
+  const gapBefore = prev && prev.page === l.page ? l.top - prev.bottom : Infinity;
+  const gapAfter = next && next.page === l.page ? next.top - l.bottom : Infinity;
+  return gapBefore >= l.size * 1.2 && (gapAfter < l.size * 1.5 || gapAfter === Infinity);
+}
+
+/** Sous-titre à peine plus grand que le corps (titre de poste, de certification…) introduisant un bloc serré. */
+function isSubHeading(l: Line, body: number, prev: Line | undefined, next: Line | undefined, following: Line[]): boolean {
+  if (l.mono || l.size < body * 1.04 || l.size >= body * 1.15 || l.text.length > 70 || /[.:;,]$/.test(l.text)) return false;
+  const gapBefore = prev && prev.page === l.page ? l.top - prev.bottom : Infinity;
+  const gapAfter = next && next.page === l.page ? next.top - l.bottom : Infinity;
+  if (!(gapBefore >= l.size * 1.2 && gapAfter < l.size * 0.6)) return false;
+  // Le bloc introduit doit contenir, dans les 3 lignes qui suivent, du texte plus petit (sinon c'est une phrase sur deux lignes).
+  for (let k = 0; k < 3; k++) {
+    const n = following[k];
+    if (!n || n.page !== l.page || n.top < l.top) break;
+    if (n.size < l.size - 0.3) return true;
+  }
+  return false;
 }
 
 function linesToBlocks(lines: Line[], body: number, hl: HeadingLevels, images: PageImage[], imageBlock: (im: PageImage) => Block): Block[] {
   const out: Block[] = [];
+  // Interligne dominant de la page (écart médian entre lignes consécutives de même taille) :
+  // un saut de paragraphe doit être nettement plus grand que lui.
+  const gaps: number[] = [];
+  for (let k = 1; k < lines.length; k++) {
+    const a = lines[k - 1], b = lines[k];
+    const g = b.top - a.bottom;
+    if (a.page === b.page && Math.abs(a.size - b.size) < 0.3 && g > 0 && g < b.size * 2) gaps.push(g);
+  }
+  gaps.sort((p, q) => p - q);
+  const medianGap = gaps.length ? gaps[Math.floor(gaps.length / 2)] : 0;
+  const paraGap = (size: number) => Math.max(size * 0.55, Math.min(size * 1.2, medianGap * 1.25 + 0.5));
+  const colRightCache = new Map<Line, number>();
+  /** Bord droit de la colonne d'une ligne : x1 maximal des lignes partageant son x0 (± 2 × taille). */
+  const colRight = (l: Line): number => {
+    let v = colRightCache.get(l);
+    if (v === undefined) {
+      v = l.x1;
+      for (const o of lines) if (o.page === l.page && Math.abs(o.x0 - l.x0) <= l.size && o.x1 > v) v = o.x1;
+      colRightCache.set(l, v);
+    }
+    return v;
+  };
   let imgIdx = 0;
   let para: Line[] = [];
   let code: Line[] = [];
@@ -502,10 +575,12 @@ function linesToBlocks(lines: Line[], body: number, hl: HeadingLevels, images: P
     const next = lines[i + 1];
     flushImagesBefore(l.top);
     const gap = prev ? l.top - prev.bottom : Infinity;
+    // Remontée verticale = changement de colonne : on ne fusionne jamais au travers.
+    if (prev && gap < -2 * l.size) flushAll();
 
-    if (isSizeHeading(l, body) || isBoldHeading(l, body, prev, next)) {
+    if (isSizeHeading(l, body) || isCapsHeading(l, body, prev, next) || isBoldHeading(l, body, prev, next) || isSubHeading(l, body, prev, next, lines.slice(i + 1, i + 4))) {
       flushAll();
-      const level = isSizeHeading(l, body) ? (hl.bySize.get(l.size) ?? 1) : hl.boldLevel;
+      const level = isSizeHeading(l, body) ? (hl.bySize.get(l.size) ?? 1) : isCapsHeading(l, body, prev, next) ? hl.capsLevel : hl.boldLevel;
       // Les titres sur deux lignes consécutives de même taille sont fusionnés.
       let text = l.text;
       while (i + 1 < lines.length && isSizeHeading(lines[i + 1], body) && lines[i + 1].size === l.size && lines[i + 1].top - lines[i].bottom < l.size * 0.6) {
@@ -545,10 +620,13 @@ function linesToBlocks(lines: Line[], body: number, hl: HeadingLevels, images: P
     }
     flushList();
 
+    const prevLine = para[para.length - 1];
+    const prevShort = !!prevLine && prevLine.x1 < colRight(prevLine) - l.size * 4;
     const newPara =
       !para.length ||
-      gap > l.size * 0.55 ||
-      Math.abs(l.size - para[para.length - 1].size) > 0.6 ||
+      gap > paraGap(l.size) ||
+      Math.abs(l.size - prevLine.size) >= 0.4 ||
+      (prevShort && Math.abs(l.x0 - prevLine.x0) < l.size * 0.5 && !/[,;]$/.test(prevLine.text)) ||
       (/[.!?:]$/.test(para[para.length - 1].text) && l.x0 > para[para.length - 1].x0 + l.size * 0.9) ||
       (para[para.length - 1].x1 < para[0].x1 - l.size * 6 && /[.!?]$/.test(para[para.length - 1].text));
     if (newPara) flushPara();
@@ -634,6 +712,24 @@ function linesToInlines(lines: Line[]): Inline[] {
   push();
   // Un paragraphe entièrement en gras (ligne bold) garde le gras.
   if (lines.every((l) => l.bold)) for (const i of out) { if (i.type === 'text') i.bold = true; if (i.type === 'link') i.children?.forEach((c) => (c.bold = true)); }
+  return out;
+}
+
+/** Une suite d'au moins trois paragraphes courts sans ponctuation finale (compétences, contacts…) devient une liste. */
+function shortRunsToLists(blocks: Block[]): Block[] {
+  const out: Block[] = [];
+  let run: Block[] = [];
+  const isShort = (b: Block) => b.type === 'paragraph' && b.inlines.every((i) => i.type !== 'br') && (() => { const t = b.inlines.map((i) => i.text ?? (i.type === 'link' ? i.children?.map((c) => c.text ?? '').join('') : '')).join(''); return t.length <= 45 && !/[.!?;:]$/.test(t) && t.split(' ').length <= 6; })();
+  const flush = () => {
+    if (run.length >= 3) out.push({ type: 'list', ordered: false, items: run.map((b) => ({ blocks: [b] })) });
+    else out.push(...run);
+    run = [];
+  };
+  for (const b of blocks) {
+    if (isShort(b)) run.push(b);
+    else { flush(); out.push(b); }
+  }
+  flush();
   return out;
 }
 
