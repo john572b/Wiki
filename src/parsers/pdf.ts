@@ -3,7 +3,9 @@ import type { PDFPageProxy, TextItem } from 'pdfjs-dist/types/src/display/api';
 import pdfWorkerUrl from '../pdf.worker.ts?worker&url';
 import type { Block, DocumentModel, DocWarning, ImageAsset, Inline, ListBlock } from '../model/types';
 import type { OcrEngine } from '../ocr/engine';
-import { ocrPageToBlocks, joinLines } from '../ocr/structure';
+import { ocrPagesToBlocks, joinLines } from '../ocr/structure';
+import { shortRunsToLists } from '../model/postprocess';
+import { recognizeWithLayout } from '../ocr/layout';
 import { sha256Hex } from '../util/hash';
 import { canvasToPng, makeCanvas } from '../util/image';
 
@@ -165,6 +167,10 @@ export async function parsePdf(buffer: ArrayBuffer, opts: PdfParseOptions): Prom
       appendPageBlocks(blocks, pageBlocks);
     }
     void confSum;
+    const garbage = pages.filter((p) => p.scanned && p.textChars >= 30);
+    if (garbage.length) {
+      warnings.push({ code: 'PDF_TEXT_UNREADABLE', message: `Couche texte illisible (polices sans table Unicode) sur ${garbage.length === pages.length ? 'toutes les pages' : 'les pages ' + garbage.map((p) => p.index).join(', ')} : texte obtenu par OCR.` });
+    }
     if (pages.some((p) => p.scanned) && !pages.every((p) => p.scanned)) {
       warnings.push({ code: 'PDF_MIXED', message: `Document mixte : pages ${pages.filter((p) => p.scanned).map((p) => p.index).join(', ')} traitées par OCR.` });
     }
@@ -342,7 +348,7 @@ async function imageObjectToAsset(page: PDFPageProxy, objId: string, pageIndex: 
     try {
       if (page.objs.has(objId)) resolve(page.objs.get(objId) as PdfImageObj);
       else {
-        const timer = setTimeout(() => resolve(null), 10000);
+        const timer = setTimeout(() => resolve(null), 2500);
         page.objs.get(objId, (data: unknown) => { clearTimeout(timer); resolve(data as PdfImageObj); });
       }
     } catch {
@@ -402,26 +408,34 @@ function isScanned(pd: PageData): boolean {
   const bigImage = pd.images.some((im) => im.area >= 0.45 * pageArea);
   if (pd.textChars < 30 && bigImage) return true;
   if (pd.textChars === 0 && pd.images.length === 0) return false;
-  // Texte corrompu (polices sans table Unicode) : proportion de caractères non imprimables.
-  const all = pd.lines.map((l) => l.text).join('');
-  if (all.length >= 20) {
-    const bad = (all.match(/[�-\u0000-\u0008\u000E-\u001F]/g) ?? []).length;
-    if (bad / all.length > 0.3 && bigImage) return true;
-  }
-  return false;
+  return hasGarbageText(pd);
+}
+
+/**
+ * Texte corrompu (polices embarquées sans table Unicode) : la couche texte contient des codes de glyphes,
+ * caractères de contrôle ou de remplacement, et très peu de lettres. On traite alors la page par OCR,
+ * car pdf.js sait quand même la dessiner avec les polices embarquées.
+ */
+export function hasGarbageText(pd: { lines: { text: string }[] }): boolean {
+  const all = pd.lines.map((l) => l.text).join('').replace(/\s+/g, '');
+  if (all.length < 40) return false;
+  const bad = (all.match(/[�-\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F-\u009F]/g) ?? []).length;
+  const letters = (all.match(/\p{L}/gu) ?? []).length;
+  return bad / all.length > 0.08 || letters / all.length < 0.4;
 }
 
 async function ocrPage(page: PDFPageProxy, ocr: OcrEngine): Promise<Block[]> {
   const base = page.getViewport({ scale: 1 });
-  const scale = Math.min(3, Math.max(1.5, 2200 / base.width));
+  // Largeur de rendu visée ~2200 px quel que soit le format de page (bornes pour les pages géantes ou minuscules).
+  const scale = Math.min(4, Math.max(0.3, 2200 / base.width));
   const viewport = page.getViewport({ scale });
   const canvas = makeCanvas(Math.ceil(viewport.width), Math.ceil(viewport.height));
   const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
   ctx.fillStyle = '#fff';
   ctx.fillRect(0, 0, canvas.width, canvas.height);
   await page.render({ canvasContext: ctx, canvas: canvas as HTMLCanvasElement, viewport }).promise;
-  const ocrResult = await ocr.recognize(canvas as HTMLCanvasElement);
-  return ocrPageToBlocks(ocrResult);
+  const regions = await recognizeWithLayout(ocr, canvas);
+  return ocrPagesToBlocks(regions);
 }
 
 function removeHeadersFooters(pages: PageData[]): void {
@@ -712,24 +726,6 @@ function linesToInlines(lines: Line[]): Inline[] {
   push();
   // Un paragraphe entièrement en gras (ligne bold) garde le gras.
   if (lines.every((l) => l.bold)) for (const i of out) { if (i.type === 'text') i.bold = true; if (i.type === 'link') i.children?.forEach((c) => (c.bold = true)); }
-  return out;
-}
-
-/** Une suite d'au moins trois paragraphes courts sans ponctuation finale (compétences, contacts…) devient une liste. */
-function shortRunsToLists(blocks: Block[]): Block[] {
-  const out: Block[] = [];
-  let run: Block[] = [];
-  const isShort = (b: Block) => b.type === 'paragraph' && b.inlines.every((i) => i.type !== 'br') && (() => { const t = b.inlines.map((i) => i.text ?? (i.type === 'link' ? i.children?.map((c) => c.text ?? '').join('') : '')).join(''); return t.length <= 45 && !/[.!?;:]$/.test(t) && t.split(' ').length <= 6; })();
-  const flush = () => {
-    if (run.length >= 3) out.push({ type: 'list', ordered: false, items: run.map((b) => ({ blocks: [b] })) });
-    else out.push(...run);
-    run = [];
-  };
-  for (const b of blocks) {
-    if (isShort(b)) run.push(b);
-    else { flush(); out.push(b); }
-  }
-  flush();
   return out;
 }
 

@@ -1,0 +1,12 @@
+import { chromium } from '@playwright/test';
+import { readFileSync, writeFileSync } from 'node:fs';
+const [,, file, pageNo = '1', width = '900'] = process.argv;
+const browser = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium-1194/chrome-linux/chrome' });
+const page = await browser.newPage();
+await page.goto('http://127.0.0.1:5173/tests/debug/debug.html');
+await page.waitForFunction(() => window.ready && window.renderPage);
+const b64 = readFileSync(file).toString('base64');
+const r = await page.evaluate(([b, n, w]) => window.renderPage(b, Number(n), Number(w)), [b64, pageNo, width]);
+writeFileSync(`tests/debug/page-${pageNo}.png`, Buffer.from(r.png.split(',')[1], 'base64'));
+console.log('page size', r.w, r.h);
+await browser.close();

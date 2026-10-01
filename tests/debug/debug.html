@@ -25,3 +25,40 @@ window.raw = async (b64) => {
   return JSON.stringify(page.blocks.map((b) => b.paragraphs.map((p) => p.lines.map((l) => [l.text, l.y1 - l.y0, Math.round(l.confidence)]))), null, 1);
 };
 </script>
+<script type="module">
+import * as pdfjs from '/node_modules/pdfjs-dist/build/pdf.mjs';
+pdfjs.GlobalWorkerOptions.workerSrc = '/node_modules/pdfjs-dist/build/pdf.worker.mjs';
+window.renderPage = async (b64, n, width) => {
+  const bin = Uint8Array.from(atob(b64), (c) => c.charCodeAt(0));
+  const pdf = await pdfjs.getDocument({ data: bin, disableFontFace: true, standardFontDataUrl: '/pdfjs/standard_fonts/', cMapUrl: '/pdfjs/cmaps/', cMapPacked: true }).promise;
+  const page = await pdf.getPage(n);
+  const base = page.getViewport({ scale: 1 });
+  const viewport = page.getViewport({ scale: width / base.width });
+  const c = document.createElement('canvas'); c.width = Math.ceil(viewport.width); c.height = Math.ceil(viewport.height);
+  await page.render({ canvasContext: c.getContext('2d'), canvas: c, viewport }).promise;
+  return { w: base.width, h: base.height, png: c.toDataURL('image/png') };
+};
+</script>
+<script type="module">
+import { recognizeWithLayout, segmentRegions } from '/src/ocr/layout.ts';
+window.ocrPage = async (b64, n) => {
+  const r = await window.renderPage(b64, n, 2200);
+  const img = new Image(); img.src = r.png; await img.decode();
+  const c = document.createElement('canvas'); c.width = img.width; c.height = img.height;
+  c.getContext('2d').drawImage(img, 0, 0);
+  const regions = segmentRegions(c);
+  const pages = await recognizeWithLayout(window.ocr, c);
+  return JSON.stringify({ regions, pages: pages.map((p) => p.blocks.map((b) => b.paragraphs.map((pp) => pp.lines.map((l) => [l.text, Math.round(l.y1 - l.y0), Math.round(l.confidence)])))) });
+};
+</script>
+<script type="module">
+import { segmentRegions } from '/src/ocr/layout.ts';
+window.regions = async (b64, n) => {
+  const r = await window.renderPage(b64, n, 2200);
+  const img = new Image(); img.src = r.png; await img.decode();
+  const c = document.createElement('canvas'); c.width = img.width; c.height = img.height;
+  c.getContext('2d').drawImage(img, 0, 0);
+  const dbg = []; const regs = segmentRegions(c, { debug: (i) => dbg.push(i) });
+  return JSON.stringify({ regs, dbg }, null, 1);
+};
+</script>

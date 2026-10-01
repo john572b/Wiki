@@ -1,7 +1,8 @@
 import type { DocumentModel } from '../model/types';
 import type { OcrEngine } from '../ocr/engine';
 import { preprocessForOcr } from '../ocr/engine';
-import { ocrPageToBlocks } from '../ocr/structure';
+import { ocrPagesToBlocks } from '../ocr/structure';
+import { recognizeWithLayout } from '../ocr/layout';
 import { decodeImage, makeImageAsset } from '../util/image';
 
 export interface ImageParseOptions {
@@ -40,10 +41,11 @@ export async function parseImage(buffer: ArrayBuffer, opts: ImageParseOptions): 
     if (dec) {
       try {
         const canvas = preprocessForOcr(dec.bitmap);
-        const page = await opts.ocr.recognize(canvas);
-        textBlocks = ocrPageToBlocks(page);
-        doc.metadata.ocr = { used: true, pages: [1], engine: opts.ocr.id, langs: opts.langs, meanConfidence: page.meanConfidence };
-        if (page.meanConfidence < 50) doc.metadata.warnings.push({ code: 'OCR_LOW_CONFIDENCE', message: `Confiance OCR faible (${Math.round(page.meanConfidence)} %). Vérifiez le texte.` });
+        const pages = await recognizeWithLayout(opts.ocr, canvas);
+        textBlocks = ocrPagesToBlocks(pages);
+        const conf = pages.length ? pages.reduce((s, p) => s + p.meanConfidence, 0) / pages.length : 0;
+        doc.metadata.ocr = { used: true, pages: [1], engine: opts.ocr.id, langs: opts.langs, meanConfidence: conf };
+        if (conf < 50) doc.metadata.warnings.push({ code: 'OCR_LOW_CONFIDENCE', message: `Confiance OCR faible (${Math.round(conf)} %). Vérifiez le texte.` });
       } finally {
         dec.bitmap.close();
       }
