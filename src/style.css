@@ -69,3 +69,7 @@ details.options summary { cursor: pointer; color: var(--muted); }
 .filelist li.rejected { color: var(--err); }
 .privacy { font-size: 13px; color: var(--muted); border-left: 3px solid var(--ok); padding-left: 10px; margin: 12px 0 0; }
 @media (max-width: 700px) { .preview-overlay { padding: 8px; } table.jobs { font-size: 13px; } }
+
+.site-footer { margin-top: 40px; padding-top: 14px; border-top: 1px solid var(--border); color: var(--muted); font-size: 13px; display: flex; flex-wrap: wrap; gap: 6px 14px; }
+.site-footer a { color: var(--accent); text-decoration: none; }
+.site-footer a:hover { text-decoration: underline; }

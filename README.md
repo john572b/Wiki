@@ -16,6 +16,32 @@ Convertisseur **local** de documents (PDF, DOCX, images) vers des formats de wik
 
 Le bouton **Copier** de Confluence place du HTML riche dans le presse-papiers (collage direct dans l'éditeur Cloud ou Server). Le fichier `confluence.html` est au *Storage Format* (API REST, éditeur de source).
 
+## Faire tourner l'application sur votre propre serveur
+
+L'application est un site statique : aucun backend, aucune base de données, aucun appel sortant. Il suffit de construire le dossier `dist/` et de le servir avec n'importe quel serveur web (nginx, Apache, IIS, Caddy…) ou hébergeur statique.
+
+```bash
+git clone https://github.com/john572b/Wiki.git
+cd Wiki
+npm install
+npm run build          # produit dist/
+```
+
+Copiez ensuite `dist/` sur votre serveur. Exemple avec nginx (les en-têtes de sécurité de `public/_headers` sont à reporter dans la configuration du serveur) :
+
+```nginx
+server {
+    listen 443 ssl;
+    server_name wiki.exemple.com;
+    root /var/www/wiki-converter/dist;
+    index index.html;
+    add_header Content-Security-Policy "default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; worker-src 'self' blob:; connect-src 'self'; img-src 'self' blob: data:; style-src 'self' 'unsafe-inline'; frame-src 'self' blob:; frame-ancestors 'none'" always;
+    location / { try_files $uri $uri/ =404; }
+}
+```
+
+Une fois la page chargée, elle fonctionne sans connexion Internet (OCR et modèles compris). HTTPS est nécessaire pour le bouton Copier (API presse-papiers du navigateur). Aucun compte Cloudflare n'est requis pour cet usage.
+
 ## Développement
 
 ```bash

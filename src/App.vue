@@ -196,6 +196,12 @@ async function changeLangs() {
     </div>
   </template>
 
+  <footer class="site-footer">
+    <span>Wiki Converter est open source.</span>
+    <a href="https://github.com/john572b/Wiki" rel="noopener">github.com/john572b/Wiki</a>
+    <span>Une entreprise peut le cloner et l’héberger sur son propre serveur : c’est un site statique, sans backend ni base de données.</span>
+  </footer>
+
   <PreviewPanel v-if="preview" :job="preview.job" :output="preview.output" :image-prefix="imagePrefixFor(preview.job)" @close="preview = null" @toast="showToast" />
   <div v-if="toast" class="toast" role="status">{{ toast }}</div>
 </template>
