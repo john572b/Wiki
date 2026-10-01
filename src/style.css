@@ -73,3 +73,5 @@ details.options summary { cursor: pointer; color: var(--muted); }
 .site-footer { margin-top: 40px; padding-top: 14px; border-top: 1px solid var(--border); color: var(--muted); font-size: 13px; display: flex; flex-wrap: wrap; gap: 6px 14px; }
 .site-footer a { color: var(--accent); text-decoration: none; }
 .site-footer a:hover { text-decoration: underline; }
+.lang-group { display: flex; flex-direction: column; gap: 4px; }
+.lang-group label.inline { gap: 6px; }

@@ -25,6 +25,12 @@ const categoriesText = ref('');
 let ocrEngine: OcrEngine | null = null;
 
 const availableFormats = CONVERTERS;
+const OCR_LANGS = [
+  { id: 'eng', label: 'Anglais' },
+  { id: 'fra', label: 'Français' },
+  { id: 'deu', label: 'Allemand' },
+  { id: 'ltz', label: 'Luxembourgeois' },
+];
 const canConvert = computed(() => selected.value.some((s) => !s.rejected) && options.formats.length > 0);
 const doneCount = computed(() => jobs.value.filter((j) => j.status === 'done').length);
 const errorCount = computed(() => jobs.value.filter((j) => j.status === 'error').length);
@@ -64,6 +70,7 @@ function imagePrefixFor(job: Job): string {
 
 async function convert() {
   options.mediawiki.categories = categoriesText.value.split(',').map((s) => s.trim()).filter(Boolean);
+  if (!options.langs.length) options.langs = ['eng'];
   const slugs = new Map<string, number>();
   jobs.value = selected.value
     .filter((s) => !s.rejected)
@@ -142,15 +149,11 @@ async function changeLangs() {
         <summary>Options avancées</summary>
         <div class="options-grid">
           <label class="inline"><input type="checkbox" v-model="options.ocrEnabled" /> OCR des images et pages scannées</label>
-          <label>Langues OCR
-            <select multiple v-model="options.langs" @change="changeLangs" size="4">
-              <option value="fra">Français</option>
-              <option value="eng">Anglais</option>
-              <option value="deu">Allemand</option>
-              <option value="ltz">Luxembourgeois</option>
-            </select>
-            <span class="muted">Ctrl+clic pour en choisir plusieurs. Moins de langues = OCR plus rapide.</span>
-          </label>
+          <div class="lang-group">
+            <span>Langues OCR</span>
+            <label class="inline" v-for="l in OCR_LANGS" :key="l.id"><input type="checkbox" :value="l.id" v-model="options.langs" @change="changeLangs" /> {{ l.label }}</label>
+            <span class="muted">Moins de langues = OCR plus rapide.</span>
+          </div>
           <label>Documents traités en parallèle <input type="number" min="1" max="8" v-model.number="options.concurrency" /></label>
           <label>Threads OCR <input type="number" min="1" max="4" v-model.number="options.ocrWorkers" /></label>
           <label>Pages max par PDF <input type="number" min="1" max="2000" v-model.number="options.maxPages" /></label>

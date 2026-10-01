@@ -10,8 +10,15 @@ async function renderTextPng(page: Page, html: string, width = 1190, height = 16
   return page.screenshot({ type: 'png', fullPage: false });
 }
 
-async function uploadAndConvert(page: Page, files: { name: string; mimeType: string; buffer: Buffer }[], formats = ['mediawiki', 'confluence']) {
+async function uploadAndConvert(page: Page, files: { name: string; mimeType: string; buffer: Buffer }[], formats = ['mediawiki', 'confluence'], langs?: string[]) {
   await page.goto('/');
+  if (langs) {
+    await page.locator('details.options summary').click();
+    for (const box of await page.locator('.lang-group input[type=checkbox]').all()) {
+      const l = (await box.getAttribute('value')) ?? '';
+      if (langs.includes(l)) await box.check(); else await box.uncheck();
+    }
+  }
   for (const box of await page.locator('.formats input[type=checkbox]').all()) {
     const f = (await box.getAttribute('value')) ?? '';
     if (await box.isEnabled()) {
@@ -110,7 +117,7 @@ test.describe('Wiki Converter', () => {
     await uploadAndConvert(page, [
       { name: 'scan.pdf', mimeType: 'application/pdf', buffer: scanned },
       { name: 'mixte.pdf', mimeType: 'application/pdf', buffer: mixed },
-    ], ['mediawiki']);
+    ], ['mediawiki'], ['fra', 'eng']);
     const scan = await readSource(page, 'scan.pdf', 'MediaWiki');
     expect(scan.toLowerCase()).toContain('page numérisée');
     expect(scan).toMatch(/==\s*Rapport scanné\s*==/);
