@@ -1,0 +1,27 @@
+<!doctype html><html><head><meta charset="utf-8"><title>debug</title></head><body>
+<script type="module">
+import '/src/polyfills.ts';
+import { parsePdf } from '/src/parsers/pdf.ts';
+import { parseImage } from '/src/parsers/image.ts';
+import { parseDocx } from '/src/parsers/docx.ts';
+import { TesseractEngine } from '/src/ocr/engine.ts';
+window.ocr = new TesseractEngine({ langs: ['fra', 'eng'], workers: 1 });
+window.run = async (b64, kind, name) => {
+  const bin = Uint8Array.from(atob(b64), (c) => c.charCodeAt(0));
+  const buf = bin.buffer;
+  let doc;
+  if (kind === 'pdf') doc = await parsePdf(buf, { sourceFilename: name, ocr: window.ocr, langs: ['fra','eng'], maxPages: 50, onStage: (s, p, t) => console.log('stage', s, p, t) });
+  else if (kind === 'docx') doc = await parseDocx(buf, { sourceFilename: name });
+  else doc = await parseImage(buf, { sourceFilename: name, mime: 'image/png', ocr: window.ocr, langs: ['fra','eng'], onStage: (s) => console.log('stage', s) });
+  return JSON.stringify({ meta: doc.metadata, images: doc.images.map((i) => ({ id: i.id, w: i.width, h: i.height, mime: i.mime, bytes: i.data.length })), blocks: doc.blocks }, null, 1);
+};
+window.ready = true;
+</script></body></html>
+<script type="module">
+window.raw = async (b64) => {
+  const bin = Uint8Array.from(atob(b64), (c) => c.charCodeAt(0));
+  const bmp = await createImageBitmap(new Blob([bin], { type: 'image/png' }));
+  const page = await window.ocr.recognize(bmp);
+  return JSON.stringify(page.blocks.map((b) => b.paragraphs.map((p) => p.lines.map((l) => [l.text, l.y1 - l.y0, Math.round(l.confidence)]))), null, 1);
+};
+</script>

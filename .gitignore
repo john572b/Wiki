@@ -1,0 +1,9 @@
+node_modules/
+dist/
+.wrangler/
+test-results/
+playwright-report/
+tests/fixtures/generated/
+tests/corpus-private/
+*.log
+tests/debug/*.png

@@ -1,0 +1,21 @@
+<!doctype html><html><head><meta charset="utf-8"></head><body><script type="module">
+import * as pdfjs from '/node_modules/pdfjs-dist/build/pdf.mjs';
+pdfjs.GlobalWorkerOptions.workerSrc = '/node_modules/pdfjs-dist/build/pdf.worker.mjs';
+window.run = async (b64) => {
+  const bin = Uint8Array.from(atob(b64), (c) => c.charCodeAt(0));
+  const pdf = await pdfjs.getDocument({ data: bin }).promise;
+  const page = await pdf.getPage(1);
+  const ops = await page.getOperatorList();
+  const names = Object.fromEntries(Object.entries(pdfjs.OPS).map(([k, v]) => [v, k]));
+  const list = ops.fnArray.map((f, i) => names[f] + (f === pdfjs.OPS.paintImageXObject || f === pdfjs.OPS.dependency ? ' ' + JSON.stringify(ops.argsArray[i]) : ''));
+  const imgIds = ops.fnArray.map((f, i) => f === pdfjs.OPS.paintImageXObject ? ops.argsArray[i][0] : null).filter(Boolean);
+  const info = [];
+  for (const id of imgIds) {
+    const has = page.objs.has(id);
+    const obj = await new Promise((res) => { try { page.objs.get(id, (d) => res(d)); } catch (e) { res('ERR ' + e.message); } });
+    info.push({ id, has, keys: obj && typeof obj === 'object' ? Object.keys(obj) : String(obj), w: obj?.width, h: obj?.height, kind: obj?.kind, bitmap: obj?.bitmap ? Object.prototype.toString.call(obj.bitmap) : null, dataLen: obj?.data?.length });
+  }
+  return JSON.stringify({ list: list.filter((x) => !x.startsWith('setFont') && !x.startsWith('showText')), info }, null, 1);
+};
+window.ready = true;
+</script></body></html>

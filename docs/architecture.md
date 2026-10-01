@@ -1,4 +1,98 @@
-# Wiki Converter — Architecture technique (v0.1, à valider)
+# Wiki Converter — Architecture technique
+
+> **Mise à jour du 1er octobre 2026 : hébergement Cloudflare.** L'hébergement cible n'est plus un serveur Docker mais **Cloudflare** (compte existant, où tourne déjà `cvtool`). Cette contrainte change l'architecture retenue, décrite dans le chapitre A ci-dessous, **qui prime sur les sections 1, 6, 7 et 8** du document d'origine (conservées pour mémoire : elles restent valables si un jour l'application doit tourner sur un serveur Docker). Les sections 3 à 5, 9 à 13 restent exactes dans leur principe ; les écarts d'implémentation sont listés en A.6.
+
+---
+
+## A. Architecture retenue : traitement 100 % dans le navigateur, site statique sur Cloudflare
+
+### A.1 Pourquoi
+
+Cloudflare ne fournit pas de serveur Docker classique. Trois options existaient :
+
+| Option | Verdict |
+|---|---|
+| **Cloudflare Containers** (Workers + conteneur Docker Python/Tesseract) | Possible, mais : plan Workers Paid obligatoire, image à construire via Workers Builds, **les documents seraient traités sur l'infrastructure Cloudflare** (un cloud tiers, contraire à l'esprit de l'exigence 2), pas de réseau « sans sortie » comme avec Docker `internal: true`. |
+| **Workers purs (JavaScript)** | Pas d'OCR possible (limites CPU/mémoire, pas de canvas), pas de rendu de pages PDF. |
+| **Tout dans le navigateur, hébergement statique** ✅ | Les documents **ne quittent même pas le poste de l'utilisateur**. Aucun backend, aucun stockage, plan gratuit, rien à administrer. Le site est un ensemble de fichiers (HTML, JS, WebAssembly, modèles OCR) servi par Cloudflare. |
+
+La troisième option est **plus stricte** que l'exigence initiale (« aucun document ne quitte le serveur ») : il n'y a plus de serveur du tout dans la boucle. C'est elle qui a été implémentée.
+
+### A.2 Garanties de confidentialité, vérifiables
+
+1. **Pas de backend** : `wrangler.jsonc` ne déclare que des *assets* statiques (`assets.directory = dist/`). Aucun code ne s'exécute côté Cloudflare, aucun point d'entrée ne peut recevoir un fichier.
+2. **Content-Security-Policy `connect-src 'self'`** (dans `public/_headers` et en balise `<meta>`) : le navigateur lui-même interdit toute requête vers un autre domaine. Même un bug ou une dépendance malveillante ne peut pas exfiltrer un document.
+3. **Tout est auto-hébergé** : Tesseract (worker + cœur WebAssembly + modèles `fra`, `eng`, `deu`) dans `public/tesseract/`, polices et CMaps de pdf.js dans `public/pdfjs/`. Aucun CDN. Une fois la page chargée, la connexion peut être coupée.
+4. **Test automatisé** (`tests/e2e/convert.spec.ts`) : pendant la conversion d'une image avec OCR, Playwright enregistre toutes les requêtes et vérifie qu'aucune ne sort de l'origine.
+5. **Pas de stockage** : résultats en mémoire de la page ; fermer l'onglet efface tout. La politique de rétention (section 7.2) devient sans objet.
+6. **Pas d'IA** : aucun appel à Workers AI ni à un LLM (vérifié : CVtool, lui, utilise `@cf/meta/llama-3.3-70b-instruct-fp8-fast`, ce qui est précisément ce que ce projet exclut).
+
+### A.3 Stack implémenté
+
+| Composant | Choix | Rôle |
+|---|---|---|
+| Interface | Vue 3 + Vite + TypeScript, page unique | dépôt, formats, tableau de statuts, résultats, aperçu, copier, ZIP |
+| PDF | **pdf.js** (`pdfjs-dist` 5.x) | texte avec tailles/gras/police, images natives avec position (parcours de la liste d'opérateurs et des matrices de transformation), liens, rendu des pages scannées pour l'OCR |
+| DOCX | **JSZip + DOMParser** (parcours OOXML maison) | titres (`outlineLvl`), listes (`numbering.xml`), tableaux avec fusions, images inline et ancrées, liens, code, révisions acceptées, légendes |
+| Images | Canvas | ré-encodage (suppression EXIF), niveaux de gris + agrandissement ×2 avant OCR |
+| OCR | **Tesseract 5 WebAssembly** (`tesseract.js` 7), modèles `tessdata_fast` | blocs → paragraphes → lignes avec boîtes ; titres par hauteur de ligne, listes par puces |
+| Modèle | `DocumentModel` TypeScript (section 4, inchangé) | neutre, normalisation (fusion inlines, admonitions par mots-clés, nivellement des titres, nommage des images) |
+| Convertisseurs | `converters/mediawiki`, `converters/confluence`, registre | interface `Converter` (section 5) ; `dokuwiki` et `bookstack` déclarés mais grisés (V2) |
+| Aperçus | rendu du wikitext réel (sous-ensemble émis) et transformation du Storage Format | iframe `sandbox`, images en `data:` |
+| Parallélisme | file d'attente en mémoire, N jobs simultanés (option), N threads OCR (option) | pdf.js et Tesseract ont chacun leurs *workers* |
+| Export | `fflate` | ZIP par document et ZIP du lot (`<slug>/mediawiki.txt`, `confluence.html`, `confluence.paste.html`, `README.txt`, `images/`) |
+| Presse-papiers | `ClipboardItem` `text/plain` + `text/html` | Confluence reçoit du HTML riche, MediaWiki du wikitext |
+| Hébergement | Cloudflare Workers (*static assets*), route `wiki.boi.lu` | `wrangler.jsonc`, en-têtes dans `public/_headers` |
+
+Polyfills : pdf.js 5.x utilise des API très récentes (`Map.prototype.getOrInsertComputed`, `Promise.try`, `Math.sumPrecise`, `Uint8Array.toBase64`). `src/polyfills.ts` les fournit, dans la page et dans le worker pdf.js, pour les navigateurs d'entreprise en retard d'une version.
+
+### A.4 Pipeline d'un fichier (dans l'onglet)
+
+```text
+File (navigateur)
+  ├─ analyse     : extension + octets magiques (incohérence → erreur MIME_MISMATCH), taille max
+  ├─ extraction  : parsePdf | parseDocx | parseImage  → DocumentModel + images (Uint8Array)
+  │     PDF : page sans texte + grande image → rendu canvas → Tesseract → blocs
+  │           texte corrompu (polices sans Unicode) → idem
+  │           en-têtes/pieds répétés supprimés, césures fusionnées, listes/titres par règles
+  ├─ normalisation
+  ├─ conversion  : pour chaque format coché → { main, extraFiles, clipboard, previewHtml, notes }
+  └─ résultat en mémoire (Vue) : Prévisualiser / Copier / ZIP
+```
+
+Chaque job ne reçoit que son `File` et une copie des options ; les convertisseurs sont des fonctions pures. Le test « lot en parallèle » convertit quatre PDF portant des marqueurs distincts et vérifie qu'aucun marqueur ne fuit vers un autre résultat.
+
+### A.5 Limites et sécurité côté navigateur
+
+| Mesure | Implémentation |
+|---|---|
+| Taille par fichier | 50 Mo (option) |
+| Pages PDF | 300 (option) |
+| Bombe de décompression DOCX | taille décompressée totale et ratio vérifiés avant lecture ; chemins `..`/absolus refusés |
+| Images | `MAX_IMAGE_PIXELS` 50 Mpx ; ré-encodage (EXIF/GPS supprimés) |
+| PDF chiffré | refusé avec message clair |
+| DOC (Word 97-2003) | refusé avec consigne « enregistrer en DOCX » (LibreOffice n'existe pas dans un navigateur) |
+| CSP | `default-src 'self'`, `connect-src 'self'`, `script-src 'self' 'wasm-unsafe-eval'`, `frame-ancestors 'none'` |
+| Aperçu | iframe `sandbox` sans script, CSP propre `default-src 'none'` |
+| Journaux | aucun (pas de serveur) |
+
+### A.6 Écarts par rapport au document d'origine
+
+- **Pas de DOC** en V1 ni en V2 côté navigateur : impossible sans LibreOffice. Si ce besoin est fort, la seule voie est un service de conversion séparé (serveur), à décider à part.
+- **Tableaux PDF** : non détectés (pdf.js n'a pas d'équivalent de `find_tables`) ; rendus en paragraphes. Les tableaux DOCX sont complets.
+- **Schémas vectoriels PDF** : non extraits en V1.
+- **OCR partagé avec CVtool** : sans objet, CVtool n'a pas d'OCR (section 3.5 devient caduque). Le module `src/ocr/` reste autonome et réutilisable.
+- **Authentification** : la page ne manipulant aucun document côté serveur, l'accès public au site n'expose aucune donnée. Si l'on veut restreindre l'accès, Cloudflare Access (Zero Trust) se configure devant `wiki.boi.lu` sans modifier l'application.
+- **Performance** : dépend du poste de l'utilisateur. Ordre de grandeur mesuré en test (Chromium, 1 cœur) : DOCX < 1 s, PDF texte de 2 pages < 1 s, OCR d'une page A4 à 300 dpi ≈ 2 à 4 s.
+
+### A.7 Déploiement
+
+Voir `README.md`. Deux chemins : `npm run deploy` avec un jeton API (`CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`), ou connexion du dépôt GitHub à Workers Builds (build `npm run build`, déploiement `npx wrangler deploy`).
+
+---
+
+# Document d'origine (architecture serveur Docker, conservée pour mémoire)
+
 
 Hébergement cible : **wiki.boi.lu**
 Nature : convertisseur documentaire **100 % local**, déterministe, **sans IA**, **sans sortie réseau**.

@@ -1,0 +1,11 @@
+import { writeFileSync } from 'node:fs';
+import { chromium } from '@playwright/test';
+import { makeScannedPdf } from '../fixtures/generate.ts';
+const browser = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium-1194/chrome-linux/chrome' });
+const page = await browser.newPage({ viewport: { width: 1190, height: 1684 } });
+await page.setContent('<html><body style="margin:0;background:#fff;font-family:Arial,Helvetica,sans-serif;color:#000"><div style="padding:80px"><h1 style="font-size:48px">Rapport scanné</h1><p style="font-size:28px;line-height:1.5">Ceci est une page numérisée. Le texte est reconnu par OCR local.</p><p style="font-size:28px">• Premier point<br>• Second point</p></div></body></html>');
+const shot = await page.screenshot({ type: 'png' });
+writeFileSync('tests/fixtures/generated/scan.png', shot);
+writeFileSync('tests/fixtures/generated/scan.pdf', await makeScannedPdf(shot));
+await browser.close();
+console.log('scan ok');
