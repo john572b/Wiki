@@ -214,7 +214,17 @@
    "inlines": [
     {
      "type": "text",
-     "text": "JONATHAN BOI CONTACT"
+     "text": "JONATHAN BOI"
+    }
+   ]
+  },
+  {
+   "type": "heading",
+   "level": 2,
+   "inlines": [
+    {
+     "type": "text",
+     "text": "CONTACT"
     }
    ]
   },
@@ -297,7 +307,7 @@
   },
   {
    "type": "heading",
-   "level": 1,
+   "level": 2,
    "inlines": [
     {
      "type": "text",
@@ -430,7 +440,7 @@
   },
   {
    "type": "heading",
-   "level": 1,
+   "level": 2,
    "inlines": [
     {
      "type": "text",
@@ -467,7 +477,7 @@
   },
   {
    "type": "heading",
-   "level": 1,
+   "level": 2,
    "inlines": [
     {
      "type": "text",

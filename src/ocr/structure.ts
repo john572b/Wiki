@@ -22,20 +22,34 @@ export function ocrPagesToBlocks(pages: OcrPage[]): Block[] {
   const all = pages.flatMap((p) => p.blocks.flatMap((b) => b.paragraphs.flatMap((pp) => pp.lines))).filter((l) => l.text.trim());
   const heights = all.map((l) => l.y1 - l.y0).sort((a, b) => a - b);
   const median = heights[Math.floor(heights.length / 2)] || 1;
-  const blocks = pages.flatMap((p) => ocrPageToBlocks(p, median));
+  const blocks = pages.flatMap((p) => regionToBlocks(p, median));
+  assignHeadingLevels(blocks);
   return shortRunsToLists(mergeSplitHeadings(blocks));
+}
+
+/** Niveaux de titres cohérents sur toute la page : par taille décroissante, puis titres en majuscules. */
+function assignHeadingLevels(blocks: Block[]): void {
+  const sizes = [...new Set(blocks.filter((b) => b.type === 'heading' && b.level !== CAPS_KEY).map((b) => (b as { level: number }).level))].sort((a, b) => b - a);
+  const capsLevel = Math.min(sizes.length + 1, 5);
+  for (const b of blocks) if (b.type === 'heading') b.level = b.level === CAPS_KEY ? capsLevel : Math.min(sizes.indexOf(b.level) + 1, 4);
+}
+
+const CAPS_KEY = -1; // clé provisoire des titres en majuscules, remplacée par assignHeadingLevels
+
+/** Page seule : équivalent de ocrPagesToBlocks([page]). */
+export function ocrPageToBlocks(page: OcrPage): Block[] {
+  return ocrPagesToBlocks([page]);
 }
 
 /**
  * Transforme une page (ou région) OCR en blocs par règles :
  * titres par hauteur de ligne ou majuscules, listes par puces, paragraphes par regroupement Tesseract.
  */
-export function ocrPageToBlocks(page: OcrPage, bodyHeight?: number): Block[] {
+function regionToBlocks(page: OcrPage, bodyHeight?: number): Block[] {
   const allLines = page.blocks.flatMap((b) => b.paragraphs.flatMap((p) => p.lines)).filter((l) => l.text.trim());
   if (!allLines.length) return [];
   const heights = allLines.map((l) => l.y1 - l.y0).sort((a, b) => a - b);
   const median = bodyHeight ?? (heights[Math.floor(heights.length / 2)] || 1);
-  const headingSizes = new Set<number>();
   const out: Block[] = [];
   let listBuf: { ordered: boolean; text: string }[] = [];
   const flushList = () => {
@@ -50,10 +64,8 @@ export function ocrPageToBlocks(page: OcrPage, bodyHeight?: number): Block[] {
   };
   const pushHeading = (text: string, sizeKey: number) => {
     flushList();
-    headingSizes.add(sizeKey);
     out.push({ type: 'heading', level: sizeKey, inlines: [textInline(text)] });
   };
-  const CAPS_KEY = -1; // niveau attribué après coup, sous les titres par taille
   let lastLine: TLine | undefined;
 
   for (const block of page.blocks) {
@@ -122,11 +134,7 @@ export function ocrPageToBlocks(page: OcrPage, bodyHeight?: number): Block[] {
     }
   }
   flushList();
-  // Niveaux : plus la ligne est haute, plus le niveau est petit ; les titres en majuscules viennent ensuite.
-  const sizes = [...headingSizes].filter((s) => s !== CAPS_KEY).sort((a, b) => b - a);
-  const capsLevel = Math.min(sizes.length + 1, 5);
-  for (const b of out) if (b.type === 'heading') b.level = b.level === CAPS_KEY ? capsLevel : Math.min(sizes.indexOf(b.level) + 1, 4);
-  return out;
+  return out; // les niveaux (clés de taille ou CAPS_KEY) sont attribués par assignHeadingLevels
 }
 
 function mostlyUpper(text: string): boolean {
