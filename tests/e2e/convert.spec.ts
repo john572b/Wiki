@@ -12,8 +12,8 @@ async function renderTextPng(page: Page, html: string, width = 1190, height = 16
 
 async function uploadAndConvert(page: Page, files: { name: string; mimeType: string; buffer: Buffer }[], formats = ['mediawiki', 'confluence']) {
   await page.goto('/');
-  for (const f of ['mediawiki', 'confluence', 'dokuwiki', 'bookstack']) {
-    const box = page.locator(`input[type=checkbox][value=${f}]`);
+  for (const box of await page.locator('.formats input[type=checkbox]').all()) {
+    const f = (await box.getAttribute('value')) ?? '';
     if (await box.isEnabled()) {
       if (formats.includes(f)) await box.check(); else await box.uncheck();
     }
@@ -72,6 +72,18 @@ test.describe('Wiki Converter', () => {
     expect(cf).toContain('<ac:structured-macro ac:name="warning">');
     expect(cf).toContain('<ac:structured-macro ac:name="code">');
     expect(cf).toContain('<th><p>Paramètre</p></th>');
+  });
+
+  test('DOCX : les six formats de sortie', async ({ page }) => {
+    const docx = Buffer.from(await makeDocx());
+    const all = ['mediawiki', 'confluence', 'confluence-wiki', 'dokuwiki', 'markdown', 'bookstack'];
+    await uploadAndConvert(page, [{ name: 'procedure-vpn.docx', mimeType: 'application/octet-stream', buffer: docx }], all);
+    const card = page.locator('[data-result-name="procedure-vpn.docx"]');
+    await expect(card.locator('.fmt', { hasText: '✓' })).toHaveCount(all.length);
+    expect(await readSource(page, 'procedure-vpn.docx', 'DokuWiki')).toContain('====== Configuration réseau ======');
+    expect(await readSource(page, 'procedure-vpn.docx', 'Markdown')).toContain('# Configuration réseau');
+    expect(await readSource(page, 'procedure-vpn.docx', 'BookStack')).toContain('<h1>Configuration réseau</h1>');
+    expect(await readSource(page, 'procedure-vpn.docx', 'Confluence wiki markup')).toContain('h1. Configuration réseau');
   });
 
   test('PDF texte : titres, listes, image positionnée, en-têtes/pieds supprimés, code', async ({ page }) => {

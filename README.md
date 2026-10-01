@@ -1,6 +1,6 @@
 # Wiki Converter — wiki.boi.lu
 
-Convertisseur **local** de documents (PDF, DOCX, images) vers des formats de wiki (MediaWiki, Confluence).
+Convertisseur **local** de documents (PDF, DOCX, images) vers des formats de wiki : MediaWiki, Confluence (Storage Format + HTML collable), Confluence wiki markup (Server/Data Center), DokuWiki, Markdown (GitHub/GitLab Wiki, Wiki.js…), BookStack.
 
 - **Aucun document ne quitte le navigateur** : extraction, OCR (Tesseract en WebAssembly) et conversion s'exécutent dans la page. Le site est un simple ensemble de fichiers statiques hébergé sur Cloudflare Workers ; il n'a aucun backend et ne reçoit jamais vos fichiers.
 - **Aucune IA** : parsing, règles déterministes, templates.
@@ -9,7 +9,7 @@ Convertisseur **local** de documents (PDF, DOCX, images) vers des formats de wik
 ## Utilisation
 
 1. Déposez vos documents (ou cliquez sur « Sélectionner des fichiers »).
-2. Cochez les formats de sortie (MediaWiki, Confluence).
+2. Cochez les formats de sortie (MediaWiki, Confluence, Confluence wiki markup, DokuWiki, Markdown, BookStack).
 3. Cliquez sur **Convertir**.
 4. Pour chaque document : **Prévisualiser**, **Copier** (presse-papiers) ou télécharger le ZIP (texte + `images/`).
 5. Téléversez les images listées dans votre wiki avec les noms indiqués (l'application ne peut pas le faire à votre place : elle n'a aucun accès réseau).
@@ -54,7 +54,8 @@ src/
 ├── detect/       détection du type (octets magiques + extension)
 ├── parsers/      pdf.ts (pdf.js), docx.ts (OOXML), image.ts
 ├── ocr/          moteur Tesseract WASM auto-hébergé + règles de structure
-├── converters/   base.ts, registry.ts, mediawiki/, confluence/  (ajouter un format = un dossier + une ligne)
+├── converters/   base.ts, registry.ts, mediawiki/, confluence/, confluence-wiki/, dokuwiki/, markdown/, bookstack/
+│                 (ajouter un format = un dossier + une ligne dans registry.ts)
 ├── preview/      aperçus HTML spécifiques à chaque format
 ├── pipeline/     file d'attente, exécution d'un job, statuts
 ├── export/       ZIP par document / par lot

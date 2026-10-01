@@ -37,7 +37,7 @@ La troisième option est **plus stricte** que l'exigence initiale (« aucun docu
 | Images | Canvas | ré-encodage (suppression EXIF), niveaux de gris + agrandissement ×2 avant OCR |
 | OCR | **Tesseract 5 WebAssembly** (`tesseract.js` 7), modèles `tessdata_fast` | blocs → paragraphes → lignes avec boîtes ; titres par hauteur de ligne, listes par puces |
 | Modèle | `DocumentModel` TypeScript (section 4, inchangé) | neutre, normalisation (fusion inlines, admonitions par mots-clés, nivellement des titres, nommage des images) |
-| Convertisseurs | `converters/mediawiki`, `converters/confluence`, registre | interface `Converter` (section 5) ; `dokuwiki` et `bookstack` déclarés mais grisés (V2) |
+| Convertisseurs | `converters/mediawiki`, `confluence`, `confluence-wiki`, `dokuwiki`, `markdown`, `bookstack`, registre | interface `Converter` (section 5) ; six formats disponibles |
 | Aperçus | rendu du wikitext réel (sous-ensemble émis) et transformation du Storage Format | iframe `sandbox`, images en `data:` |
 | Parallélisme | file d'attente en mémoire, N jobs simultanés (option), N threads OCR (option) | pdf.js et Tesseract ont chacun leurs *workers* |
 | Export | `fflate` | ZIP par document et ZIP du lot (`<slug>/mediawiki.txt`, `confluence.html`, `confluence.paste.html`, `README.txt`, `images/`) |
