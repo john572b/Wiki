@@ -34,7 +34,9 @@ export class TesseractEngine implements OcrEngine {
     this.scheduler = createScheduler();
     const n = Math.max(1, this.opts.workers);
     for (let i = 0; i < n; i++) {
-      const w = await createWorker([...this.opts.langs], OEM.LSTM_ONLY, {
+      // L'anglais en dernier : le premier modèle pèse le plus sur les accents et caractères spéciaux.
+      const langs = [...this.opts.langs].sort((a, b) => (a === 'eng' ? 1 : 0) - (b === 'eng' ? 1 : 0));
+      const w = await createWorker(langs, OEM.LSTM_ONLY, {
         workerPath: `${base}/worker.min.js`,
         corePath,
         langPath: `${base}/lang`,
