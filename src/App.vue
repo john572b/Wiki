@@ -197,7 +197,7 @@ async function changeLangs() {
   </template>
 
   <footer class="site-footer">
-    <span>Wiki Converter est open source.</span>
+    <span>Wiki Converter est open source (licence MIT).</span>
     <a href="https://github.com/john572b/Wiki" rel="noopener">github.com/john572b/Wiki</a>
     <span>Une entreprise peut le cloner et l’héberger sur son propre serveur : c’est un site statique, sans backend ni base de données.</span>
   </footer>

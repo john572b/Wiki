@@ -92,3 +92,7 @@ public/
 ```
 
 Voir `docs/architecture.md` pour l'architecture détaillée et les choix techniques.
+
+## Licence
+
+MIT. Voir le fichier `LICENSE`. Les composants embarqués ont leurs propres licences libres : Tesseract (Apache 2.0), tesseract.js (Apache 2.0), pdf.js (Apache 2.0), Vue (MIT), JSZip (MIT), fflate (MIT).
