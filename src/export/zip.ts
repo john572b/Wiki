@@ -42,3 +42,10 @@ export function downloadBytes(bytes: Uint8Array, filename: string, mime = 'appli
   a.remove();
   setTimeout(() => URL.revokeObjectURL(url), 10000);
 }
+
+/** Pack d'images seul, prêt à téléverser : les fichiers à la racine, déjà nommés comme dans le texte wiki. */
+export function zipImages(job: Job, imagePrefix: string): Uint8Array {
+  const files: Record<string, Uint8Array> = {};
+  for (const im of job.doc?.images ?? []) files[`${imagePrefix}${im.filename}`] = im.data;
+  return zipSync(files, { level: 6 });
+}

@@ -25,6 +25,14 @@ export const ADMONITION_KEYWORDS: Record<string, AdmonitionKind> = {
 export interface NormalizeOptions {
   promoteFirstHeadingToTitle?: boolean;
   detectAdmonitions?: boolean;
+  /** Base des noms d'images : « Procédure VPN » → « Procédure VPN-1.png ». Défaut : « image ». */
+  imageBaseName?: string;
+}
+
+/** Nom de base sûr pour les fichiers image, dérivé du nom du document (accents et espaces conservés). */
+export function imageBaseNameFrom(filename: string): string {
+  const base = filename.replace(/\.[^.]+$/, '').replace(/[\\/:*?"<>|#[\]{}\u0000-\u001f]+/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 80);
+  return base || 'document';
 }
 
 /** Fusionne les inlines adjacents ayant les mêmes attributs et nettoie les espaces. */
@@ -191,7 +199,7 @@ export function normalizeDocument(doc: DocumentModel, opts: NormalizeOptions = {
   const images = order
     .map((id) => byId.get(id))
     .filter((im): im is NonNullable<typeof im> => !!im)
-    .map((im, idx) => ({ ...im, filename: `image-${String(idx + 1).padStart(3, '0')}.${extFor(im.mime)}` }));
+    .map((im, idx) => ({ ...im, filename: `${opts.imageBaseName ?? 'image'}-${idx + 1}.${extFor(im.mime)}` }));
   return { ...doc, metadata: { ...doc.metadata, title: title || null }, blocks, images };
 }
 

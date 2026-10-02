@@ -10,7 +10,11 @@ export default defineConfig({
   use: {
     baseURL: 'http://127.0.0.1:4173',
     headless: true,
-    launchOptions: { executablePath: process.env.PW_CHROMIUM || '/opt/pw-browsers/chromium-1194/chrome-linux/chrome' },
+    launchOptions: {
+      executablePath: process.env.PW_CHROMIUM || '/opt/pw-browsers/chromium-1194/chrome-linux/chrome',
+      // Locale UTF-8 : sans elle, Chromium remplace les noms de téléchargement accentués par « download ».
+      env: { ...process.env, LANG: 'C.UTF-8', LC_ALL: 'C.UTF-8' } as Record<string, string>,
+    },
   },
   webServer: {
     command: 'npx vite preview --host 127.0.0.1 --port 4173',

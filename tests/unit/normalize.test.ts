@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { normalizeDocument, mergeInlines } from '../../src/model/normalize';
+import { normalizeDocument, mergeInlines, imageBaseNameFrom } from '../../src/model/normalize';
 import { text } from '../../src/model/types';
 import { makeDoc, fakeImage } from './helpers';
 
@@ -58,8 +58,18 @@ describe('normalize', () => {
     const n = normalizeDocument(doc);
     expect(n.blocks.length).toBe(3);
     expect(n.images.map((i) => [i.id, i.filename])).toEqual([
-      ['b', 'image-001.png'],
-      ['a', 'image-002.png'],
+      ['b', 'image-1.png'],
+      ['a', 'image-2.png'],
     ]);
+  });
+
+  it('nomme les images d’après le document, numérotées 1, 2, 3…', () => {
+    const doc = makeDoc(
+      [{ type: 'image', imageId: 'a', alt: '' }, { type: 'image', imageId: 'b', alt: '' }],
+      [fakeImage('a', 'x.png'), { ...fakeImage('b', 'y.png'), mime: 'image/jpeg' }],
+    );
+    const n = normalizeDocument(doc, { imageBaseName: imageBaseNameFrom('Procédure VPN v2.docx') });
+    expect(n.images.map((i) => i.filename)).toEqual(['Procédure VPN v2-1.png', 'Procédure VPN v2-2.jpg']);
+    expect(imageBaseNameFrom('a/b:c*?.pdf')).toBe('a b c');
   });
 });

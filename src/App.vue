@@ -64,8 +64,8 @@ function remove(i: number) {
   selected.value.splice(i, 1);
 }
 
-function imagePrefixFor(job: Job): string {
-  return options.imagePrefixMode === 'slug' ? `${job.slug}-` : '';
+function imagePrefixFor(_job: Job): string {
+  return '';
 }
 
 async function convert() {
@@ -157,12 +157,7 @@ async function changeLangs() {
           <label>Documents traités en parallèle <input type="number" min="1" max="8" v-model.number="options.concurrency" /></label>
           <label>Threads OCR <input type="number" min="1" max="4" v-model.number="options.ocrWorkers" /></label>
           <label>Pages max par PDF <input type="number" min="1" max="2000" v-model.number="options.maxPages" /></label>
-          <label>Noms des images
-            <select v-model="options.imagePrefixMode">
-              <option value="slug">préfixés par le nom du document (recommandé)</option>
-              <option value="none">image-001.png, image-002.png…</option>
-            </select>
-          </label>
+          <label class="inline"><input type="checkbox" v-model="options.keepRepeatedImages" /> Conserver les images répétées sur chaque page (logos d’en-tête)</label>
           <label>MediaWiki : espace de noms des fichiers
             <select v-model="options.mediawiki.fileNamespace"><option value="File">File:</option><option value="Fichier">Fichier:</option><option value="Datei">Datei:</option></select>
           </label>

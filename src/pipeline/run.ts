@@ -1,5 +1,5 @@
 import { detect } from '../detect/detect';
-import { normalizeDocument } from '../model/normalize';
+import { imageBaseNameFrom, normalizeDocument } from '../model/normalize';
 import type { DocumentModel } from '../model/types';
 import { getConverter } from '../converters/registry';
 import type { MediaWikiOptions } from '../converters/mediawiki';
@@ -46,6 +46,7 @@ export async function runJob(job: Job, opts: PipelineOptions, ocr: OcrEngine | n
           ocr: engine,
           langs: opts.langs,
           maxPages: opts.maxPages,
+          dropRepeatedImages: !opts.keepRepeatedImages,
           onStage: (stage, page, total) => set(stage === 'ocr' ? 'ocr' : 'extracting', `page ${page}/${total}`),
         });
         break;
@@ -65,11 +66,11 @@ export async function runJob(job: Job, opts: PipelineOptions, ocr: OcrEngine | n
         throw new Error('UNSUPPORTED_TYPE');
     }
     job.ocrUsed = doc.metadata.ocr.used;
-    doc = normalizeDocument(doc);
+    doc = normalizeDocument(doc, { imageBaseName: imageBaseNameFrom(job.file.name) });
     job.doc = doc;
 
     set('converting');
-    const imagePrefix = opts.imagePrefixMode === 'slug' ? `${job.slug}-` : '';
+    const imagePrefix = '';
     job.outputs = [];
     for (const formatId of opts.formats) {
       const conv = getConverter(formatId);

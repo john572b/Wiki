@@ -18,6 +18,8 @@ export interface PdfParseOptions {
   maxPages: number;
   /** Conserver l'image de page entière des pages scannées comme image du document. */
   includePageScans?: boolean;
+  /** Ignorer les images répétées sur plusieurs pages (logos d'en-tête). */
+  dropRepeatedImages?: boolean;
   onStage?: (stage: 'extract' | 'ocr', page: number, total: number) => void;
   /** Développement : reçoit les lignes extraites (après nettoyage) pour ajuster les heuristiques. */
   onDebugLines?: (lines: { page: number; text: string; size: number; bold: boolean; mono: boolean; x0: number; x1: number; top: number; bottom: number }[]) => void;
@@ -124,8 +126,10 @@ export async function parsePdf(buffer: ArrayBuffer, opts: PdfParseOptions): Prom
 
     // Images décoratives répétées (logos d'en-tête) : présentes sur ≥ 3 pages ou sur ≥ 50 % des pages (≥ 2).
     const decorative = new Set<string>();
-    for (const [hash, set] of imageHashes) {
-      if (set.size >= 3 || (pdf.numPages >= 2 && set.size >= Math.max(2, pdf.numPages / 2))) decorative.add(hash);
+    if (opts.dropRepeatedImages) {
+      for (const [hash, set] of imageHashes) {
+        if (set.size >= 3 || (pdf.numPages >= 2 && set.size >= Math.max(2, pdf.numPages / 2))) decorative.add(hash);
+      }
     }
     removeHeadersFooters(pages);
     opts.onDebugLines?.(pages.flatMap((p) => p.lines.map((l) => ({ page: l.page, text: l.text, size: l.size, bold: l.bold, mono: l.mono, x0: Math.round(l.x0), x1: Math.round(l.x1), top: Math.round(l.top), bottom: Math.round(l.bottom) }))));

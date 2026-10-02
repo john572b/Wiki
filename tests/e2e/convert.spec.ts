@@ -50,7 +50,7 @@ test.describe('Wiki Converter', () => {
     const row = page.locator('tr[data-job-name="capture.png"]');
     await expect(row).toHaveAttribute('data-job-status', 'done');
     const mw = await readSource(page, 'capture.png', 'MediaWiki');
-    expect(mw).toContain('[[File:capture-image-001.png|thumb');
+    expect(mw).toContain('[[File:capture-1.png|thumb');
     expect(mw.toLowerCase()).toContain('bonjour le monde');
   });
 
@@ -60,22 +60,22 @@ test.describe('Wiki Converter', () => {
     const mw = await readSource(page, 'procedure-vpn.docx', 'MediaWiki');
     expect(mw).toContain('== Configuration réseau ==');
     expect(mw).toContain("Cliquez sur '''Configuration''' puis ''Réseau''.");
-    expect(mw).toContain('[[File:procedure-vpn-image-001.png|thumb|Capture de configuration]]');
+    expect(mw).toContain('[[File:procedure-vpn-1.png|thumb|Capture de configuration]]');
     expect(mw).toContain('=== Étapes ===');
     expect(mw).toContain('# Ouvrir le menu\n# Choisir le profil');
     expect(mw).toContain('* Puce A\n** Sous-puce\n* Puce B');
     expect(mw).toContain("'''Attention'''");
     expect(mw).toContain('ne pas redémarrer pendant la mise à jour.');
     expect(mw).toContain('{| class="wikitable"\n|-\n! Paramètre\n! Valeur\n|-\n| Serveur\n| vpn.example.org\n|-\n|colspan="2" | Cellule fusionnée\n|}');
-    expect(mw).toContain('[[File:procedure-vpn-image-002.png|thumb|Deuxième capture]]');
+    expect(mw).toContain('[[File:procedure-vpn-2.png|thumb|Deuxième capture]]');
     expect(mw).toContain('<syntaxhighlight>\nsudo systemctl restart openvpn\njournalctl -u openvpn -f\n</syntaxhighlight>');
     expect(mw).toContain('[https://example.org/doc site officiel]');
     // L'ordre image 1 → tableau → image 2 est conservé.
-    expect(mw.indexOf('image-001')).toBeLessThan(mw.indexOf('wikitable'));
-    expect(mw.indexOf('wikitable')).toBeLessThan(mw.indexOf('image-002'));
+    expect(mw.indexOf('procedure-vpn-1.png')).toBeLessThan(mw.indexOf('wikitable'));
+    expect(mw.indexOf('wikitable')).toBeLessThan(mw.indexOf('procedure-vpn-2.png'));
     const cf = await readSource(page, 'procedure-vpn.docx', 'Confluence');
     expect(cf).toContain('<h1>Configuration réseau</h1>');
-    expect(cf).toContain('<ri:attachment ri:filename="procedure-vpn-image-001.png" />');
+    expect(cf).toContain('<ri:attachment ri:filename="procedure-vpn-1.png" />');
     expect(cf).toContain('<ac:structured-macro ac:name="warning">');
     expect(cf).toContain('<ac:structured-macro ac:name="code">');
     expect(cf).toContain('<th><p>Paramètre</p></th>');
@@ -93,6 +93,19 @@ test.describe('Wiki Converter', () => {
     expect(await readSource(page, 'procedure-vpn.docx', 'Confluence wiki markup')).toContain('h1. Configuration réseau');
   });
 
+  test('pack d’images : fichiers à la racine, nommés d’après le document', async ({ page }) => {
+    const docx = Buffer.from(await makeDocx());
+    await uploadAndConvert(page, [{ name: 'Procédure VPN.docx', mimeType: 'application/octet-stream', buffer: docx }], ['mediawiki']);
+    const card = page.locator('[data-result-name="Procédure VPN.docx"]');
+    const [download] = await Promise.all([page.waitForEvent('download'), card.getByRole('button', { name: /Pack d’images \(2\)/ }).click()]);
+    expect(download.suggestedFilename()).toBe('Procédure VPN - images.zip');
+    const { unzipSync } = await import('fflate');
+    const { readFile } = await import('node:fs/promises');
+    const entries = Object.keys(unzipSync(new Uint8Array(await readFile(await download.path()))));
+    expect(entries.sort()).toEqual(['Procédure VPN-1.png', 'Procédure VPN-2.png']);
+    expect(await readSource(page, 'Procédure VPN.docx', 'MediaWiki')).toContain('[[File:Procédure VPN-1.png|thumb');
+  });
+
   test('PDF texte : titres, listes, image positionnée, en-têtes/pieds supprimés, code', async ({ page }) => {
     const pdf = Buffer.from(await makeTextPdf('ALPHA'));
     await uploadAndConvert(page, [{ name: 'install-alpha.pdf', mimeType: 'application/pdf', buffer: pdf }], ['mediawiki']);
@@ -101,12 +114,12 @@ test.describe('Wiki Converter', () => {
     expect(mw).toContain('== Étape suivante ==');
     expect(mw).toContain('== Annexe ==');
     expect(mw).toContain("* Disposer d'un compte administrateur\n* Avoir installé le client");
-    expect(mw).toContain('[[File:install-alpha-image-001.png|thumb');
+    expect(mw).toContain('[[File:install-alpha-1.png|thumb');
     expect(mw).not.toContain('Documentation interne');
     expect(mw).not.toMatch(/Page \d \/ 2/);
     expect(mw).toContain('apt-get install client-vpn\nsystemctl enable client-vpn');
-    expect(mw.indexOf('Avoir installé')).toBeLessThan(mw.indexOf('image-001'));
-    expect(mw.indexOf('image-001')).toBeLessThan(mw.indexOf('Étape suivante'));
+    expect(mw.indexOf('Avoir installé')).toBeLessThan(mw.indexOf('install-alpha-1.png'));
+    expect(mw.indexOf('install-alpha-1.png')).toBeLessThan(mw.indexOf('Étape suivante'));
     expect(mw).toContain('Ce document décrit la procédure complète. Elle comporte plusieurs étapes');
   });
 

@@ -48,7 +48,8 @@ export interface PipelineOptions {
   ocrWorkers: number;
   maxPages: number;
   maxFileBytes: number;
-  imagePrefixMode: 'slug' | 'none';
+  /** Conserver les images répétées sur plusieurs pages (logos d'en-tête). */
+  keepRepeatedImages: boolean;
   mediawiki: { fileNamespace: string; syntaxHighlight: boolean; categories: string[]; admonitionStyle: 'div' | 'template' };
   confluence: { toc: boolean };
 }
@@ -61,7 +62,7 @@ export const DEFAULT_OPTIONS: PipelineOptions = {
   ocrWorkers: Math.max(1, Math.min(2, (typeof navigator !== 'undefined' ? navigator.hardwareConcurrency ?? 2 : 2) - 1)),
   maxPages: 300,
   maxFileBytes: 50 * 1024 * 1024,
-  imagePrefixMode: 'slug',
+  keepRepeatedImages: true,
   mediawiki: { fileNamespace: 'File', syntaxHighlight: true, categories: [], admonitionStyle: 'div' },
   confluence: { toc: false },
 };
