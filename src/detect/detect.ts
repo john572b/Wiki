@@ -1,4 +1,6 @@
-export type FileKind = 'pdf' | 'docx' | 'image' | 'doc' | 'zip' | 'unknown';
+import { looksTextual } from '../util/text';
+
+export type FileKind = 'pdf' | 'docx' | 'pptx' | 'xlsx' | 'odt' | 'html' | 'markdown' | 'text' | 'csv' | 'image' | 'doc' | 'zip' | 'unknown';
 
 export interface Detection {
   kind: FileKind;
@@ -7,7 +9,20 @@ export interface Detection {
   consistent: boolean;
 }
 
-export const ACCEPTED_EXTENSIONS = ['pdf', 'docx', 'png', 'jpg', 'jpeg', 'webp', 'gif', 'bmp', 'tif', 'tiff'];
+export const ACCEPTED_EXTENSIONS = [
+  'pdf', 'docx', 'pptx', 'xlsx', 'odt',
+  'html', 'htm', 'md', 'markdown', 'txt', 'csv', 'tsv',
+  'png', 'jpg', 'jpeg', 'webp', 'gif', 'bmp', 'tif', 'tiff',
+];
+
+/** Libellé court d'un type de fichier, pour l'interface. */
+export const KIND_LABELS: Record<FileKind, string> = {
+  pdf: 'PDF', docx: 'DOCX', pptx: 'PowerPoint', xlsx: 'Excel', odt: 'ODT', html: 'HTML', markdown: 'Markdown',
+  text: 'Texte', csv: 'CSV', image: 'Image', doc: 'DOC', zip: 'ZIP', unknown: '?',
+};
+
+const ZIP_KINDS: Record<string, FileKind> = { docx: 'docx', pptx: 'pptx', xlsx: 'xlsx', odt: 'odt' };
+const TEXT_KINDS: Record<string, FileKind> = { html: 'html', htm: 'html', md: 'markdown', markdown: 'markdown', txt: 'text', csv: 'csv', tsv: 'csv' };
 
 export function extensionOf(name: string): string {
   const m = /\.([a-z0-9]+)$/i.exec(name);
@@ -39,8 +54,8 @@ export function detect(name: string, head: Uint8Array): Detection {
     kind = 'pdf';
     mime = 'application/pdf';
   } else if (head.length >= 4 && head[0] === 0x50 && head[1] === 0x4b && (head[2] === 0x03 || head[2] === 0x05 || head[2] === 0x07)) {
-    kind = ext === 'docx' ? 'docx' : 'zip';
-    mime = ext === 'docx' ? 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' : 'application/zip';
+    kind = ZIP_KINDS[ext] ?? 'zip';
+    mime = 'application/zip';
   } else if (head.length >= 8 && head[0] === 0xd0 && head[1] === 0xcf && head[2] === 0x11 && head[3] === 0xe0) {
     kind = 'doc';
     mime = 'application/msword';
@@ -49,10 +64,14 @@ export function detect(name: string, head: Uint8Array): Detection {
     if (im && !['image/emf', 'image/wmf', 'image/svg+xml'].includes(im)) {
       kind = 'image';
       mime = im;
+    } else if (TEXT_KINDS[ext] && looksTextual(head)) {
+      kind = TEXT_KINDS[ext];
+      mime = 'text/plain';
     }
   }
   const expected: Record<string, FileKind> = {
-    pdf: 'pdf', docx: 'docx', doc: 'doc', png: 'image', jpg: 'image', jpeg: 'image', webp: 'image', gif: 'image', bmp: 'image', tif: 'image', tiff: 'image',
+    ...ZIP_KINDS, ...TEXT_KINDS,
+    pdf: 'pdf', doc: 'doc', png: 'image', jpg: 'image', jpeg: 'image', webp: 'image', gif: 'image', bmp: 'image', tif: 'image', tiff: 'image',
   };
   const consistent = expected[ext] === kind;
   return { kind, mime, consistent };

@@ -564,7 +564,7 @@ class DocxParser {
     const trs = Array.from(tbl.childNodes).filter((n) => n.nodeType === 1 && (n as Element).localName === 'tr') as Element[];
     for (const tr of trs) {
       const trPr = child(tr, 'trPr');
-      const isHeaderRow = !!child(trPr, 'tblHeader');
+      const isHeaderRow = isOn(child(trPr, 'tblHeader'));
       const cells: TableCell[] = [];
       let gridCol = 0;
       const tcs = Array.from(tr.childNodes).filter((n) => n.nodeType === 1 && (n as Element).localName === 'tc') as Element[];
@@ -621,8 +621,8 @@ function attrVal(el: Element | null): string | null {
 
 function isOn(el: Element | null): boolean {
   if (!el) return false;
-  const v = el.getAttributeNS(W, 'val') ?? el.getAttribute('w:val');
-  return v == null || v === '1' || v === 'true' || v === 'on';
+  const v = el.getAttributeNS(W, 'val') || el.getAttribute('w:val');
+  return !v || v === '1' || v === 'true' || v === 'on';
 }
 
 function isMonoFont(font?: string): boolean {

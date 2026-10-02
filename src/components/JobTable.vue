@@ -2,11 +2,12 @@
 import type { Job } from '../pipeline/types';
 import { STATUS_LABELS } from '../pipeline/types';
 import { getConverter } from '../converters/registry';
+import { KIND_LABELS } from '../detect/detect';
 
 defineProps<{ jobs: Job[]; formats: string[] }>();
 
 function kindLabel(j: Job): string {
-  return { pdf: 'PDF', docx: 'DOCX', image: 'Image', doc: 'DOC', zip: 'ZIP', unknown: '?' }[j.kind];
+  return KIND_LABELS[j.kind];
 }
 function dotClass(j: Job): string {
   if (j.status === 'pending') return 'pending';

@@ -1,0 +1,10 @@
+import { writeFileSync, mkdirSync } from 'node:fs';
+import * as G from '../fixtures/procedure.ts';
+mkdirSync('tests/fixtures/generated/proc', { recursive: true });
+const out = { docx: await G.procDocx(), odt: await G.procOdt(), pptx: await G.procPptx(), xlsx: await G.procXlsx(), pdf: await G.procPdf() };
+for (const [k, v] of Object.entries(out)) writeFileSync(`tests/fixtures/generated/proc/proc-${k}.${k}`, v);
+writeFileSync('tests/fixtures/generated/proc/proc-html.html', G.procHtml());
+writeFileSync('tests/fixtures/generated/proc/proc-md.md', G.procMarkdown());
+writeFileSync('tests/fixtures/generated/proc/proc-txt.txt', G.procText());
+writeFileSync('tests/fixtures/generated/proc/proc-csv.csv', G.procCsv());
+console.log('ok', Object.keys(out));

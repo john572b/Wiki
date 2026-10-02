@@ -1,4 +1,4 @@
-import type { Block, Inline } from '../model/types';
+import type { Block, Inline, ListBlock } from '../model/types';
 import { mergeSplitHeadings, shortRunsToLists } from '../model/postprocess';
 
 /** Structure neutre renvoyée par un moteur OCR (indépendante de Tesseract). */
@@ -15,16 +15,24 @@ const ICON_RE = /^[^\p{L}\p{N}\s("'[]{1,2}\s+(?=[\p{L}\p{N}(+])/u;
 const TRAILING_SYMBOLS_RE = /(\s+[^\p{L}\p{N}\s.,;:!?)'"»%]{1,2})+$/u;
 const PAGE_NUM_RE = /^(page\s*)?\d{1,4}\s*(\/|sur|of|de|von|-)\s*\d{1,4}\s*\S{0,2}$/i;
 
-interface TLine { text: string; height: number; y0: number; y1: number; bullet: null | { ordered: boolean; text: string }; capsLike: boolean }
+interface TLine { text: string; height: number; x0: number; y0: number; y1: number; bullet: null | { ordered: boolean; text: string }; capsLike: boolean }
 
 /** Convertit l'ensemble des régions OCR d'une page en blocs, avec une hauteur de corps commune. */
 export function ocrPagesToBlocks(pages: OcrPage[]): Block[] {
-  const all = pages.flatMap((p) => p.blocks.flatMap((b) => b.paragraphs.flatMap((pp) => pp.lines))).filter((l) => l.text.trim());
+  return ocrDocumentToBlocks([pages])[0];
+}
+
+/**
+ * Plusieurs pages, chacune découpée en régions : hauteur de corps et niveaux de titres
+ * calculés sur l'ensemble du document, pour que « CONTACT » en page 1 et « LANGUAGE » en page 2 aient le même niveau.
+ */
+export function ocrDocumentToBlocks(pages: OcrPage[][]): Block[][] {
+  const all = pages.flat().flatMap((p) => p.blocks.flatMap((b) => b.paragraphs.flatMap((pp) => pp.lines))).filter((l) => l.text.trim());
   const heights = all.map((l) => l.y1 - l.y0).sort((a, b) => a - b);
   const median = heights[Math.floor(heights.length / 2)] || 1;
-  const blocks = pages.flatMap((p) => regionToBlocks(p, median));
-  assignHeadingLevels(blocks);
-  return shortRunsToLists(mergeSplitHeadings(blocks));
+  const perPage = pages.map((regions) => regions.flatMap((r) => regionToBlocks(r, median)));
+  assignHeadingLevels(perPage.flat());
+  return perPage.map((blocks) => shortRunsToLists(mergeSplitHeadings(blocks)));
 }
 
 /** Niveaux de titres cohérents sur toute la page : par taille décroissante, puis titres en majuscules. */
@@ -51,15 +59,9 @@ function regionToBlocks(page: OcrPage, bodyHeight?: number): Block[] {
   const heights = allLines.map((l) => l.y1 - l.y0).sort((a, b) => a - b);
   const median = bodyHeight ?? (heights[Math.floor(heights.length / 2)] || 1);
   const out: Block[] = [];
-  let listBuf: { ordered: boolean; text: string }[] = [];
+  let listBuf: { ordered: boolean; text: string; x0: number }[] = [];
   const flushList = () => {
-    let i = 0;
-    while (i < listBuf.length) {
-      const ordered = listBuf[i].ordered;
-      const items: { blocks: Block[] }[] = [];
-      while (i < listBuf.length && listBuf[i].ordered === ordered) items.push({ blocks: [{ type: 'paragraph', inlines: [textInline(listBuf[i++].text)] }] });
-      out.push({ type: 'list', ordered, items });
-    }
+    if (listBuf.length) out.push(...nestByIndent(listBuf, median));
     listBuf = [];
   };
   const pushHeading = (text: string, sizeKey: number) => {
@@ -86,7 +88,7 @@ function regionToBlocks(page: OcrPage, bodyHeight?: number): Block[] {
         }
         if (bullet) bullet.text = t;
         if (!t) continue;
-        lines.push({ text: t, height: raw.y1 - raw.y0, y0: raw.y0, y1: raw.y1, bullet, capsLike: mostlyUpper(t) });
+        lines.push({ text: t, height: raw.y1 - raw.y0, x0: raw.x0, y0: raw.y0, y1: raw.y1, bullet, capsLike: mostlyUpper(t) });
       }
       if (!lines.length) continue;
       // Titres détectés ligne par ligne : hauteur nettement supérieure au corps, ou majuscules courtes.
@@ -96,7 +98,7 @@ function regionToBlocks(page: OcrPage, bodyHeight?: number): Block[] {
         if (seg.some((l) => l.bullet)) {
           seg.forEach((l, si) => {
             const gap = si > 0 ? l.y0 - seg[si - 1].y1 : Infinity;
-            if (l.bullet) listBuf.push({ ordered: l.bullet.ordered, text: l.bullet.text });
+            if (l.bullet) listBuf.push({ ordered: l.bullet.ordered, text: l.bullet.text, x0: l.x0 });
             else if (listBuf.length && gap <= median * 0.9) listBuf[listBuf.length - 1].text = joinLines([listBuf[listBuf.length - 1].text, l.text]);
             else { flushList(); out.push({ type: 'paragraph', inlines: [textInline(l.text)] }); }
           });
@@ -135,6 +137,33 @@ function regionToBlocks(page: OcrPage, bodyHeight?: number): Block[] {
   }
   flushList();
   return out; // les niveaux (clés de taille ou CAPS_KEY) sont attribués par assignHeadingLevels
+}
+
+/** Listes OCR imbriquées selon le retrait horizontal des puces (un niveau ≈ une hauteur de ligne de décalage). */
+function nestByIndent(items: { ordered: boolean; text: string; x0: number }[], median: number): Block[] {
+  const root: ListBlock[] = [];
+  const stack: { x0: number; list: ListBlock }[] = [];
+  for (const it of items) {
+    while (stack.length && stack[stack.length - 1].x0 > it.x0 + median * 0.8) stack.pop();
+    let cur = stack[stack.length - 1];
+    if (!cur || it.x0 > cur.x0 + median * 0.8) {
+      const list: ListBlock = { type: 'list', ordered: it.ordered, items: [] };
+      if (cur) {
+        if (!cur.list.items.length) cur.list.items.push({ blocks: [] });
+        cur.list.items[cur.list.items.length - 1].blocks.push(list);
+      } else root.push(list);
+      stack.push({ x0: it.x0, list });
+      cur = stack[stack.length - 1];
+    } else if (cur.list.ordered !== it.ordered && stack.length === 1) {
+      const list: ListBlock = { type: 'list', ordered: it.ordered, items: [] };
+      root.push(list);
+      stack.length = 0;
+      stack.push({ x0: it.x0, list });
+      cur = stack[0];
+    }
+    cur.list.items.push({ blocks: [{ type: 'paragraph', inlines: [textInline(it.text)] }] });
+  }
+  return root;
 }
 
 function mostlyUpper(text: string): boolean {

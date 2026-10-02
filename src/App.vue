@@ -68,6 +68,21 @@ function imagePrefixFor(_job: Job): string {
   return '';
 }
 
+// Accès de test : expose les résultats (texte uniquement) quand l'URL se termine par #e2e.
+if (typeof window !== 'undefined' && window.location.hash === '#e2e') {
+  (window as unknown as { __wcDump: () => unknown }).__wcDump = () =>
+    jobs.value.map((j) => ({
+      name: j.file.name,
+      kind: j.kind,
+      status: j.status,
+      error: j.errorMessage ?? null,
+      warnings: j.doc?.metadata.warnings.map((w) => w.message) ?? [],
+      images: j.doc?.images.map((im) => ({ name: im.filename, mime: im.mime, bytes: im.data.length })) ?? [],
+      outputs: Object.fromEntries(j.outputs.map((o) => [o.formatId, o.result.main])),
+      previews: Object.fromEntries(j.outputs.map((o) => [o.formatId, o.result.previewHtml])),
+    }));
+}
+
 async function convert() {
   options.mediawiki.categories = categoriesText.value.split(',').map((s) => s.trim()).filter(Boolean);
   if (!options.langs.length) options.langs = ['eng'];
@@ -109,7 +124,7 @@ async function changeLangs() {
 
 <template>
   <h1>Wiki Converter</h1>
-  <p class="lead">Convertit vos documents (PDF, DOCX, images) en pages prêtes à coller dans MediaWiki ou Confluence. Tout est traité dans votre navigateur : aucun document n’est envoyé à un serveur.</p>
+  <p class="lead">Convertit vos documents (PDF, Word, PowerPoint, Excel, LibreOffice, HTML, Markdown, texte, images) en pages prêtes à coller dans MediaWiki ou Confluence. Tout est traité dans votre navigateur : aucun document n’est envoyé à un serveur.</p>
 
   <template v-if="phase === 'select'">
     <div
@@ -121,7 +136,7 @@ async function changeLangs() {
       @click="fileInput?.click()"
     >
       <div class="big">Déposez vos documents ici</div>
-      <div class="hint">PDF, DOCX, PNG, JPG, WEBP, TIFF — {{ Math.round(options.maxFileBytes / 1024 / 1024) }} Mo max par fichier</div>
+      <div class="hint">PDF, Word (DOCX), PowerPoint (PPTX), Excel (XLSX), LibreOffice (ODT), HTML, Markdown, texte, CSV, images (PNG, JPG, WEBP, TIFF) — {{ Math.round(options.maxFileBytes / 1024 / 1024) }} Mo max par fichier</div>
       <button type="button" @click.stop="fileInput?.click()">Sélectionner des fichiers</button>
       <input ref="fileInput" type="file" multiple hidden :accept="ACCEPTED_EXTENSIONS.map((e) => '.' + e).join(',')" @change="onPick" data-testid="file-input" />
     </div>

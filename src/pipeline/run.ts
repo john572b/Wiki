@@ -8,6 +8,14 @@ import type { OcrEngine } from '../ocr/engine';
 import { parseDocx } from '../parsers/docx';
 import { parseImage } from '../parsers/image';
 import { parsePdf } from '../parsers/pdf';
+import { parsePptx } from '../parsers/pptx';
+import { parseXlsx } from '../parsers/xlsx';
+import { parseOdt } from '../parsers/odt';
+import { parseHtml } from '../parsers/html';
+import { parseMarkdown } from '../parsers/markdown';
+import { parseText } from '../parsers/text';
+import { parseCsv } from '../parsers/csv';
+import { decodeText } from '../util/text';
 import type { Job, JobStatus, PipelineOptions } from './types';
 import { ERROR_MESSAGES } from './types';
 
@@ -61,6 +69,27 @@ export async function runJob(job: Job, opts: PipelineOptions, ocr: OcrEngine | n
           langs: opts.langs,
           onStage: () => set('ocr'),
         });
+        break;
+      case 'pptx':
+        doc = await parsePptx(buffer, { sourceFilename: job.file.name });
+        break;
+      case 'xlsx':
+        doc = await parseXlsx(buffer, { sourceFilename: job.file.name });
+        break;
+      case 'odt':
+        doc = await parseOdt(buffer, { sourceFilename: job.file.name });
+        break;
+      case 'html':
+        doc = await parseHtml(decodeText(buffer), { sourceFilename: job.file.name });
+        break;
+      case 'markdown':
+        doc = await parseMarkdown(decodeText(buffer), { sourceFilename: job.file.name });
+        break;
+      case 'text':
+        doc = parseText(decodeText(buffer), { sourceFilename: job.file.name });
+        break;
+      case 'csv':
+        doc = parseCsv(decodeText(buffer), { sourceFilename: job.file.name, tab: /\.tsv$/i.test(job.file.name) });
         break;
       default:
         throw new Error('UNSUPPORTED_TYPE');

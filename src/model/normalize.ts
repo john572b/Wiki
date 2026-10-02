@@ -35,12 +35,31 @@ export function imageBaseNameFrom(filename: string): string {
   return base || 'document';
 }
 
-/** Fusionne les inlines adjacents ayant les mêmes attributs et nettoie les espaces. */
-export function mergeInlines(inlines: Inline[]): Inline[] {
+const URL_RE = /\bhttps?:\/\/[^\s<>"'`]+[^\s<>"'`.,;:!?)\]]/g;
+
+/** Transforme les adresses web écrites en clair dans le texte en vrais liens (hors code et liens existants). */
+export function autolink(inlines: Inline[]): Inline[] {
   const out: Inline[] = [];
-  for (const raw of inlines) {
+  for (const i of inlines) {
+    if (i.type !== 'text' || i.code || !i.text || !/https?:\/\//.test(i.text)) { out.push(i); continue; }
+    let last = 0;
+    for (const m of i.text.matchAll(URL_RE)) {
+      const start = m.index ?? 0;
+      if (start > last) out.push({ ...i, text: i.text.slice(last, start) });
+      out.push({ type: 'link', href: m[0], children: [{ ...i, text: m[0] }] });
+      last = start + m[0].length;
+    }
+    if (last < i.text.length) out.push({ ...i, text: i.text.slice(last) });
+  }
+  return out;
+}
+
+/** Fusionne les inlines adjacents ayant les mêmes attributs et nettoie les espaces. */
+export function mergeInlines(inlines: Inline[], insideLink = false): Inline[] {
+  const out: Inline[] = [];
+  for (const raw of insideLink ? inlines : autolink(inlines)) {
     const i: Inline = { ...raw };
-    if (i.type === 'link') i.children = mergeInlines(i.children ?? []);
+    if (i.type === 'link') i.children = mergeInlines((i.children ?? []).map((c) => (c.type === 'text' ? { ...c, underline: false } : c)), true);
     if (i.type === 'text') {
       if (!i.text) continue;
       i.text = i.text.replace(/[ \t ]+/g, ' ');
@@ -89,7 +108,9 @@ function normalizeBlocks(blocks: Block[], opts: NormalizeOptions): Block[] {
         break;
       }
       case 'table': {
-        const rows = b.rows.map((r) => ({ cells: r.cells.map((c) => ({ ...c, blocks: normalizeBlocks(c.blocks, { ...opts, detectAdmonitions: false }) })) }));
+        // Le gras est implicite dans une cellule d'en-tête : on ne le répète pas.
+        const unbold = (bs: Block[]): Block[] => bs.map((x) => (x.type === 'paragraph' ? { ...x, inlines: x.inlines.map((i) => (i.type === 'text' ? { ...i, bold: false } : i)) } : x));
+        const rows = b.rows.map((r) => ({ cells: r.cells.map((c) => ({ ...c, blocks: normalizeBlocks(c.header ? unbold(c.blocks) : c.blocks, { ...opts, detectAdmonitions: false }) })) }));
         if (rows.length && rows.some((r) => r.cells.length)) out.push({ ...b, rows, caption: b.caption ? mergeInlines(b.caption) : undefined });
         break;
       }

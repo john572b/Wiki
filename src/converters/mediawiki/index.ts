@@ -199,7 +199,8 @@ class Renderer {
       if (!href) return label;
       const safeHref = href.replace(/[\s\]]/g, encodeURIComponent);
       const plain = inlinesToPlainText(i.children ?? []).trim();
-      if (!plain || plain === href) return `[${safeHref}]`;
+      // Lien dont le texte est l'adresse : URL libre, que MediaWiki affiche telle quelle et rend cliquable.
+      if (!plain || plain === href) return /^https?:\/\/[^\s[\]<>{}|'"]+$/.test(href) ? href : `[${safeHref}]`;
       return `[${safeHref} ${label}]`;
     }
     let t = escapeWiki(i.text ?? '');

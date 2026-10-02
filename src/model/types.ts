@@ -5,7 +5,7 @@
 
 export const SCHEMA_VERSION = '1';
 
-export type SourceKind = 'pdf' | 'docx' | 'image';
+export type SourceKind = 'pdf' | 'docx' | 'pptx' | 'xlsx' | 'odt' | 'html' | 'markdown' | 'text' | 'csv' | 'image';
 
 export interface Inline {
   type: 'text' | 'link' | 'br';
@@ -86,6 +86,16 @@ export interface DocumentModel {
 export const text = (t: string, attrs: Partial<Inline> = {}): Inline => ({ type: 'text', text: t, ...attrs });
 export const paragraph = (inlines: Inline[]): ParagraphBlock => ({ type: 'paragraph', inlines });
 export const heading = (level: number, inlines: Inline[]): HeadingBlock => ({ type: 'heading', level, inlines });
+
+/** Document vide prêt à remplir par un parseur. */
+export function emptyDocument(sourceFilename: string, sourceKind: SourceKind): DocumentModel {
+  return {
+    schemaVersion: SCHEMA_VERSION,
+    metadata: { title: null, sourceFilename, sourceKind, pageCount: null, ocr: { used: false, pages: [] }, language: null, warnings: [] },
+    images: [],
+    blocks: [],
+  };
+}
 
 export function inlinesToPlainText(inlines: Inline[]): string {
   let out = '';

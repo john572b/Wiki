@@ -3,7 +3,7 @@ import type { PDFPageProxy, TextItem } from 'pdfjs-dist/types/src/display/api';
 import pdfWorkerUrl from '../pdf.worker.ts?worker&url';
 import type { Block, DocumentModel, DocWarning, ImageAsset, Inline, ListBlock } from '../model/types';
 import type { OcrEngine } from '../ocr/engine';
-import { ocrPagesToBlocks, joinLines } from '../ocr/structure';
+import { ocrDocumentToBlocks, joinLines, type OcrPage } from '../ocr/structure';
 import { shortRunsToLists } from '../model/postprocess';
 import { recognizeWithLayout } from '../ocr/layout';
 import { sha256Hex } from '../util/hash';
@@ -68,6 +68,7 @@ interface PageData {
   images: PageImage[];
   scanned: boolean;
   ocrBlocks: Block[] | null;
+  ocrRegions: OcrPage[] | null;
   textChars: number;
 }
 
@@ -116,13 +117,16 @@ export async function parsePdf(buffer: ArrayBuffer, opts: PdfParseOptions): Prom
       pd.scanned = isScanned(pd);
       if (pd.scanned && opts.ocr) {
         opts.onStage?.('ocr', i, pdf.numPages);
-        pd.ocrBlocks = await ocrPage(page, opts.ocr);
+        pd.ocrRegions = await ocrPage(page, opts.ocr);
       } else if (pd.scanned) {
         warnings.push({ code: 'OCR_DISABLED', message: `Page ${i} sans texte exploitable : OCR désactivé, texte non extrait.`, location: `page ${i}` });
       }
       pages.push(pd);
       page.cleanup();
     }
+
+    const ocrDone = pages.filter((p) => p.ocrRegions);
+    ocrDocumentToBlocks(ocrDone.map((p) => p.ocrRegions!)).forEach((blocks, k) => (ocrDone[k].ocrBlocks = blocks));
 
     // Images décoratives répétées (logos d'en-tête) : présentes sur ≥ 3 pages ou sur ≥ 50 % des pages (≥ 2).
     const decorative = new Set<string>();
@@ -156,7 +160,7 @@ export async function parsePdf(buffer: ArrayBuffer, opts: PdfParseOptions): Prom
           seenHash.set(asset.sha256, asset);
           images.push(asset);
         }
-        return { type: 'image', imageId: asset.id, alt: `Page ${pd.index}` };
+        return { type: 'image', imageId: asset.id, alt: '' };
       };
       if (pd.scanned) {
         pageBlocks.push(...pageImages.map(imageBlock));
@@ -201,6 +205,13 @@ async function extractPage(page: PDFPageProxy, index: number): Promise<PageData>
   const viewport = page.getViewport({ scale: 1 });
   const H = viewport.height;
   const W = viewport.width;
+  // La liste d'opérateurs charge les polices (gras, chasse fixe) avant la lecture du texte ; elle sert aussi aux images.
+  let opList: Awaited<ReturnType<PDFPageProxy['getOperatorList']>> | null = null;
+  try {
+    opList = await page.getOperatorList();
+  } catch {
+    opList = null;
+  }
   const content = await page.getTextContent({ includeMarkedContent: false, disableNormalization: false });
   const fontCache = new Map<string, { bold: boolean; mono: boolean }>();
   const fontInfo = (fontName: string): { bold: boolean; mono: boolean } => {
@@ -252,24 +263,24 @@ async function extractPage(page: PDFPageProxy, index: number): Promise<PageData>
       continue;
     }
     const fi = fontInfo(it.fontName);
-    const item: Item = { str: it.str, x, y, w: it.width, size, bold: fi.bold, mono: fi.mono };
-    const cx = x + it.width / 2;
-    const cy = y - size * 0.3;
-    for (const l of links) if (cx >= l.x0 && cx <= l.x1 && cy >= l.y0 && cy <= l.y1) { item.href = l.url; break; }
+    const base: Item = { str: it.str, x, y, w: it.width, size, bold: fi.bold, mono: fi.mono };
     textChars += it.str.trim().length;
-    const sameLine = cur && !prevEOL && Math.abs(item.y - cur.items[cur.items.length - 1].y) < 0.45 * Math.max(size, cur.size) && item.x >= cur.x0 - size;
-    if (sameLine && cur) {
-      const last = cur.items[cur.items.length - 1];
-      const gap = item.x - (last.x + last.w);
-      if (gap > 0.12 * size && !cur.text.endsWith(' ') && !item.str.startsWith(' ')) cur.text += ' ';
-      cur.text += item.str;
-      cur.items.push(item);
-      cur.x1 = Math.max(cur.x1, item.x + item.w);
-      cur.top = Math.min(cur.top, item.y - size * 0.85);
-      cur.bottom = Math.max(cur.bottom, item.y + size * 0.25);
-    } else {
-      cur = { items: [item], text: it.str, x0: item.x, x1: item.x + item.w, top: item.y - size * 0.85, bottom: item.y + size * 0.25, size, bold: false, mono: false, page: index, spacedCaps: false };
-      lines.push(cur);
+    for (const item of splitByLinks(base, links)) {
+      const sameLine = cur && !prevEOL && Math.abs(item.y - cur.items[cur.items.length - 1].y) < 0.45 * Math.max(size, cur.size) && item.x >= cur.x0 - size;
+      if (sameLine && cur) {
+        const last = cur.items[cur.items.length - 1];
+        const gap = item.x - (last.x + last.w);
+        if (gap > 0.12 * size && !cur.text.endsWith(' ') && !item.str.startsWith(' ')) cur.text += ' ';
+        cur.text += item.str;
+        cur.items.push(item);
+        cur.x1 = Math.max(cur.x1, item.x + item.w);
+        cur.top = Math.min(cur.top, item.y - size * 0.85);
+        cur.bottom = Math.max(cur.bottom, item.y + size * 0.25);
+      } else {
+        cur = { items: [item], text: item.str, x0: item.x, x1: item.x + item.w, top: item.y - size * 0.85, bottom: item.y + size * 0.25, size, bold: false, mono: false, page: index, spacedCaps: false };
+        lines.push(cur);
+      }
+      prevEOL = false;
     }
     prevEOL = !!it.hasEOL;
   }
@@ -294,18 +305,44 @@ async function extractPage(page: PDFPageProxy, index: number): Promise<PageData>
     l.mono = monoChars / chars >= 0.8;
   }
 
-  const images = await extractImages(page, H, index);
-  return { index, width: W, height: H, lines: lines.filter((l) => l.text), images, scanned: false, ocrBlocks: null, textChars };
+  const images = opList ? await extractImages(page, opList, H, index) : [];
+  return { index, width: W, height: H, lines: lines.filter((l) => l.text), images, scanned: false, ocrBlocks: null, ocrRegions: null, textChars };
 }
 
-async function extractImages(page: PDFPageProxy, H: number, pageIndex: number): Promise<PageImage[]> {
-  const out: PageImage[] = [];
-  let opList;
-  try {
-    opList = await page.getOperatorList();
-  } catch {
-    return out;
+/**
+ * Rattache les zones de lien du PDF au texte : si une zone ne couvre qu'une partie d'un fragment
+ * (« Documentation : https://… »), le fragment est découpé pour que seule la partie cliquable devienne un lien.
+ */
+function splitByLinks(item: Item, links: { x0: number; y0: number; x1: number; y1: number; url: string }[]): Item[] {
+  const cy = item.y - item.size * 0.3;
+  const l = links.find((k) => cy >= k.y0 && cy <= k.y1 && k.x1 > item.x && k.x0 < item.x + item.w);
+  if (!l) return [item];
+  const len = item.str.length;
+  let start: number, end: number;
+  const exact = item.str.indexOf(l.url);
+  if (exact >= 0) {
+    start = exact;
+    end = exact + l.url.length;
+  } else {
+    const perChar = item.w / Math.max(1, len);
+    start = Math.max(0, Math.round((l.x0 - item.x) / perChar));
+    end = Math.min(len, Math.round((l.x1 - item.x) / perChar));
+    // Ajuste aux limites de mots.
+    while (start > 0 && item.str[start - 1] !== ' ') start--;
+    while (end < len && item.str[end] !== ' ') end++;
   }
+  if (start <= 0 && end >= len) return [{ ...item, href: l.url }];
+  const perChar = item.w / Math.max(1, len);
+  const part = (a: number, b: number, href?: string): Item => ({ ...item, str: item.str.slice(a, b), x: item.x + a * perChar, w: (b - a) * perChar, href });
+  const out: Item[] = [];
+  if (start > 0) out.push(part(0, start));
+  out.push(part(start, end, l.url));
+  if (end < len) out.push(part(end, len));
+  return out.filter((p) => p.str.length);
+}
+
+async function extractImages(page: PDFPageProxy, opList: Awaited<ReturnType<PDFPageProxy['getOperatorList']>>, H: number, pageIndex: number): Promise<PageImage[]> {
+  const out: PageImage[] = [];
   const OPS = pdfjs.OPS;
   let ctm = [1, 0, 0, 1, 0, 0];
   const stack: number[][] = [];
@@ -428,7 +465,7 @@ export function hasGarbageText(pd: { lines: { text: string }[] }): boolean {
   return bad / all.length > 0.08 || letters / all.length < 0.4;
 }
 
-async function ocrPage(page: PDFPageProxy, ocr: OcrEngine): Promise<Block[]> {
+async function ocrPage(page: PDFPageProxy, ocr: OcrEngine): Promise<OcrPage[]> {
   const base = page.getViewport({ scale: 1 });
   // Largeur de rendu visée ~2200 px quel que soit le format de page (bornes pour les pages géantes ou minuscules).
   const scale = Math.min(4, Math.max(0.3, 2200 / base.width));
@@ -438,8 +475,7 @@ async function ocrPage(page: PDFPageProxy, ocr: OcrEngine): Promise<Block[]> {
   ctx.fillStyle = '#fff';
   ctx.fillRect(0, 0, canvas.width, canvas.height);
   await page.render({ canvasContext: ctx, canvas: canvas as HTMLCanvasElement, viewport }).promise;
-  const regions = await recognizeWithLayout(ocr, canvas);
-  return ocrPagesToBlocks(regions);
+  return recognizeWithLayout(ocr, canvas);
 }
 
 function removeHeadersFooters(pages: PageData[]): void {
@@ -596,6 +632,15 @@ function linesToBlocks(lines: Line[], body: number, hl: HeadingLevels, images: P
     // Remontée verticale = changement de colonne : on ne fusionne jamais au travers.
     if (prev && gap < -2 * l.size) flushAll();
 
+    // Tableau : lignes consécutives dont les fragments s'alignent sur les mêmes colonnes.
+    const run = tableRunAt(lines, i);
+    if (run) {
+      flushAll();
+      out.push(run.block);
+      i += run.length - 1;
+      continue;
+    }
+
     if (isSizeHeading(l, body) || isCapsHeading(l, body, prev, next) || isBoldHeading(l, body, prev, next) || isSubHeading(l, body, prev, next, lines.slice(i + 1, i + 4))) {
       flushAll();
       const level = isSizeHeading(l, body) ? (hl.bySize.get(l.size) ?? 1) : isCapsHeading(l, body, prev, next) ? hl.capsLevel : hl.boldLevel;
@@ -731,6 +776,58 @@ function linesToInlines(lines: Line[]): Inline[] {
   // Un paragraphe entièrement en gras (ligne bold) garde le gras.
   if (lines.every((l) => l.bold)) for (const i of out) { if (i.type === 'text') i.bold = true; if (i.type === 'link') i.children?.forEach((c) => (c.bold = true)); }
   return out;
+}
+
+interface PdfCell { x0: number; x1: number; text: string; bold: boolean }
+const LIST_MARK_RE = /^([•·▪■●○◦‣➢➤\-–—*o]|\d{1,3}[.)]|[a-z][.)]|[ivx]{1,5}[.)])$/i;
+
+/** Découpe une ligne en cellules là où l'espace entre deux fragments dépasse nettement une espace normale. */
+function cellsOf(l: Line): PdfCell[] {
+  const cells: PdfCell[] = [];
+  for (const it of l.items) {
+    const last = cells[cells.length - 1];
+    const gap = last ? it.x - last.x1 : Infinity;
+    if (last && gap < Math.max(l.size * 1.2, 6)) {
+      last.text += (gap > l.size * 0.12 && !last.text.endsWith(' ') && !it.str.startsWith(' ') ? ' ' : '') + it.str;
+      last.x1 = it.x + it.w;
+      last.bold = last.bold && it.bold;
+    } else {
+      cells.push({ x0: it.x, x1: it.x + it.w, text: it.str, bold: it.bold });
+    }
+  }
+  return cells.map((c) => ({ ...c, text: c.text.replace(/\s+/g, ' ').trim() })).filter((c) => c.text);
+}
+
+function tableRunAt(lines: Line[], i: number): { block: Block; length: number } | null {
+  const first = cellsOf(lines[i]);
+  if (first.length < 2 || LIST_MARK_RE.test(first[0].text) || lines[i].mono) return null;
+  const tol = lines[i].size * 1.0;
+  const rows: PdfCell[][] = [first];
+  let j = i + 1;
+  while (j < lines.length) {
+    const l = lines[j], p = lines[j - 1];
+    if (l.page !== p.page || l.top - p.bottom > l.size * 1.6 || l.top < p.top) break;
+    const cells = cellsOf(l);
+    if (cells.length !== first.length || LIST_MARK_RE.test(cells[0].text)) break;
+    if (!cells.every((c, k) => Math.abs(c.x0 - first[k].x0) <= tol)) break;
+    rows.push(cells);
+    j++;
+  }
+  if (rows.length < 2) return null;
+  const header = rows[0].every((c) => c.bold) && !rows.slice(1).every((r) => r.every((c) => c.bold));
+  return {
+    length: rows.length,
+    block: {
+      type: 'table',
+      rows: rows.map((r, ri) => ({
+        cells: r.map((c) => ({ blocks: [{ type: 'paragraph' as const, inlines: autolinkText(c.text) }], header: header && ri === 0, colspan: 1, rowspan: 1 })),
+      })),
+    },
+  };
+}
+
+function autolinkText(text: string): Inline[] {
+  return [{ type: 'text', text }];
 }
 
 /** Concatène les blocs d'une page ; fusionne un paragraphe coupé par un saut de page. */

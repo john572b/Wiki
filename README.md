@@ -1,6 +1,6 @@
 # Wiki Converter — wiki.boi.lu
 
-Convertisseur **local** de documents (PDF, DOCX, images) vers des formats de wiki : MediaWiki, Confluence (Storage Format + HTML collable), Confluence wiki markup (Server/Data Center), DokuWiki, Markdown (GitHub/GitLab Wiki, Wiki.js…), BookStack.
+Convertisseur **local** de documents (PDF, Word, PowerPoint, Excel, LibreOffice, HTML, Markdown, texte, CSV, images) vers des formats de wiki : MediaWiki, Confluence (Storage Format + HTML collable), Confluence wiki markup (Server/Data Center), DokuWiki, Markdown (GitHub/GitLab Wiki, Wiki.js…), BookStack.
 
 - **Aucun document ne quitte le navigateur** : extraction, OCR (Tesseract en WebAssembly) et conversion s'exécutent dans la page. Le site est un simple ensemble de fichiers statiques hébergé sur Cloudflare Workers ; il n'a aucun backend et ne reçoit jamais vos fichiers.
 - **Aucune IA** : parsing, règles déterministes, templates.
@@ -15,6 +15,27 @@ Convertisseur **local** de documents (PDF, DOCX, images) vers des formats de wik
 5. Téléversez les images listées dans votre wiki avec les noms indiqués (l'application ne peut pas le faire à votre place : elle n'a aucun accès réseau).
 
 Le bouton **Copier** de Confluence place du HTML riche dans le presse-papiers (collage direct dans l'éditeur Cloud ou Server). Le fichier `confluence.html` est au *Storage Format* (API REST, éditeur de source).
+
+## Formats d'entrée
+
+| Format | Ce qui est repris |
+|---|---|
+| PDF texte | titres, listes, tableaux alignés, images à leur place, liens, code, en-têtes et pieds de page retirés |
+| PDF scanné, ou à couche texte illisible | OCR local, colonnes détectées, titres et listes |
+| Word (DOCX) | titres, listes imbriquées, tableaux avec fusions, images, liens, code |
+| PowerPoint (PPTX) | un titre par diapositive, puces imbriquées, tableaux, images, liens ; notes ignorées |
+| Excel (XLSX) | un titre et un tableau par feuille visible, fusions, dates |
+| LibreOffice (ODT) | titres, listes, tableaux, images, liens, code |
+| HTML, Markdown | structure complète ; seules les images embarquées sont reprises, rien n'est téléchargé |
+| Texte brut | titres soulignés, listes, code indenté, paragraphes |
+| CSV, TSV | un tableau |
+| Images (PNG, JPG, WEBP, TIFF…) | l'image et son texte par OCR |
+
+Les anciens formats binaires (DOC, PPT, XLS) ne sont pas lisibles dans un navigateur : enregistrez-les au format récent.
+
+## Tests de conformité
+
+`tests/e2e/matrix.spec.ts` génère une même procédure simulée dans les 11 formats d'entrée, la convertit vers les 6 formats de sortie et vérifie, pour chacune des 66 combinaisons, les titres, listes, sous-listes, tableau, bloc de code, avertissement, lien, image et l'ordre du contenu, avec la syntaxe propre à chaque wiki.
 
 ## Faire tourner l'application sur votre propre serveur
 
@@ -78,7 +99,7 @@ Le fichier `wrangler.jsonc` publie le dossier `dist/` comme site statique et rat
 src/
 ├── model/        DocumentModel neutre + normalisation
 ├── detect/       détection du type (octets magiques + extension)
-├── parsers/      pdf.ts (pdf.js), docx.ts (OOXML), image.ts
+├── parsers/      pdf, docx, pptx, xlsx, odt, html, markdown, text, csv, image
 ├── ocr/          moteur Tesseract WASM auto-hébergé + règles de structure
 ├── converters/   base.ts, registry.ts, mediawiki/, confluence/, confluence-wiki/, dokuwiki/, markdown/, bookstack/
 │                 (ajouter un format = un dossier + une ligne dans registry.ts)

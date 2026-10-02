@@ -4,6 +4,7 @@ import { getConverter } from '../converters/registry';
 import { copyToClipboard } from '../util/clipboard';
 import { downloadBytes, zipImages, zipJob } from '../export/zip';
 import { imageBaseNameFrom } from '../model/normalize';
+import { KIND_LABELS } from '../detect/detect';
 
 const props = defineProps<{ job: Job; imagePrefix: string }>();
 const emit = defineEmits<{ preview: [output: JobOutput]; toast: [msg: string] }>();
@@ -29,7 +30,7 @@ function downloadOne(o: JobOutput) {
     <div class="title">
       {{ job.file.name }}
       <span class="muted" style="font-weight: normal">
-        · {{ { pdf: 'PDF', docx: 'DOCX', image: 'Image' }[job.kind as 'pdf' | 'docx' | 'image'] }}
+        · {{ KIND_LABELS[job.kind] }}
         <template v-if="job.doc?.metadata.pageCount"> · {{ job.doc.metadata.pageCount }} page(s)</template>
         <template v-if="job.doc?.metadata.ocr.used"> · OCR sur {{ job.doc.metadata.ocr.pages.length }} page(s)</template>
         <template v-if="job.doc?.images.length"> · {{ job.doc.images.length }} image(s)</template>

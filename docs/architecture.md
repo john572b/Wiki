@@ -33,6 +33,8 @@ La troisième option est **plus stricte** que l'exigence initiale (« aucun docu
 |---|---|---|
 | Interface | Vue 3 + Vite + TypeScript, page unique | dépôt, formats, tableau de statuts, résultats, aperçu, copier, ZIP |
 | PDF | **pdf.js** (`pdfjs-dist` 5.x) | texte avec tailles/gras/police, images natives avec position (parcours de la liste d'opérateurs et des matrices de transformation), liens, rendu des pages scannées pour l'OCR |
+| PowerPoint, Excel, ODT | **JSZip + DOMParser** | diapositives (titres, puces, tableaux, images), feuilles en tableaux, documents LibreOffice |
+| HTML, Markdown, texte, CSV | DOMParser, **marked**, règles | HTML analysé sans exécution ni téléchargement ; Markdown converti en HTML local |
 | DOCX | **JSZip + DOMParser** (parcours OOXML maison) | titres (`outlineLvl`), listes (`numbering.xml`), tableaux avec fusions, images inline et ancrées, liens, code, révisions acceptées, légendes |
 | Images | Canvas | ré-encodage (suppression EXIF), niveaux de gris + agrandissement ×2 avant OCR |
 | OCR | **Tesseract 5 WebAssembly** (`tesseract.js` 7), modèles `tessdata_fast` | blocs → paragraphes → lignes avec boîtes ; titres par hauteur de ligne, listes par puces |
